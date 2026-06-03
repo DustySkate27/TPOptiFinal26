@@ -3,13 +3,29 @@ using UnityEngine;
 
 public class CustomUpdateManager : MonoBehaviour
 {
+    public static CustomUpdateManager Instance;
+
     private List<IUpdatable> updatables = new List<IUpdatable>();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Update()
     {
         foreach (var u in updatables)
         {
-            u.Tick(Time.deltaTime);
+            u.Tick(Time.deltaTime); 
         }
     }
 
@@ -23,4 +39,5 @@ public class CustomUpdateManager : MonoBehaviour
     {
         updatables.Remove(updatable);
     }
+
 }
