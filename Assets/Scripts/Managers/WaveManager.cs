@@ -1,10 +1,13 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 
 
 public class WaveManager
 {
-    private ObjectPool<UnityEngine.Object> pool;
+    private ObjectPool<Enemy> pool;
 
     private static Action OnWaveEnd;
 
@@ -12,20 +15,22 @@ public class WaveManager
     private int currentWave;
     private int waveAmount;
 
+    Dictionary<GameObject, Enemy> enemyList;
+
     public WaveManager()
     {
         //GameManager.PreComp += 
     }
 
-    private void SpawnEnemy(UnityEngine.Object enemy)
+    private void SpawnEnemy(Enemy enemy)
     {
         for (int i = 0; i < waveSize; i++)
         {
-            //pool.Spawn();
+            //pool.Initialize();
         }
     }
 
-    private void EnemySubstract(UnityEngine.Object enemy, float damage)
+    private void EnemySubstract(Enemy enemy, float damage)
     {
         if (enemy.TakeDamage(damage) <= 0)
             waveAmount--;

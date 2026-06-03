@@ -1,5 +1,5 @@
 
 public interface IHealth
 {
-    public void TakeDamage(float damage);
+    public float TakeDamage(float damage);
 }

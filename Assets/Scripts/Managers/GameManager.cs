@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static Rigidbody playerRigidbody;
+
     public static Action OnWinCondition;
 
     public static Action PreComp; //Todo lo que necesite PreComp en pantalla de carga
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
+    public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
     {
         return Instantiate(entity, transform);
     }
