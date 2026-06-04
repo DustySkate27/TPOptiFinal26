@@ -11,9 +11,10 @@ public class Enemy : IHealth, IUpdatable
 
     public Enemy(Object gameObject, Transform target, Rigidbody targetRB, EnemySO scriptObj)
     {
+        CustomUpdateManager.Instance.Register(this);
+
         this.gameObject = gameObject;
         movement = new EnemyMovement(gameObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor);
-        CustomUpdateManager.Instance.Register(this);
     }
 
     public void Tick(float deltaTime)

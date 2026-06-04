@@ -17,13 +17,20 @@ public class GameManager : MonoBehaviour
 
     #region EVENTS
     public static Action OnWinCondition;
-    public static Action PreComp; //Todo lo que necesite PreComp en pantalla de carga
+    public static Action PreComp => () => 
+    {
+        Debug.Log("uwu");
+        Debug.Log("owo");
+        Debug.Log(":v");
+    }; //Todo lo que necesite PreComp en pantalla de carga
     #endregion
 
     private void Awake()
     {
         OnWinCondition += StopTime;
         waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+
+        PreComp?.Invoke();
     }
 
     public void LoadScene(string name)

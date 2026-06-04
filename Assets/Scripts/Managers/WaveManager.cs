@@ -21,6 +21,11 @@ public class WaveManager
 
     public WaveManager(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
+        Debug.Log(enemySO);
+        Debug.Log(target);
+        Debug.Log(targetRB);
+        Debug.Log(spawnList);
+
         enemies = new Dictionary<UnityEngine.Object, Enemy>();
         SpawnEnemy(enemySO, target, targetRB, spawnList);
     }
