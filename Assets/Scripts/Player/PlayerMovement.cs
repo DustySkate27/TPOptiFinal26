@@ -15,7 +15,7 @@ public class PlayerMovement
     
     public void Move(Vector3 dir)
     {
-        playerTransform.Translate(dir * velocity);
+        playerTransform.Translate(dir * velocity * Time.deltaTime);
     }
 
     public void MoveCamera(Vector2 dir)

@@ -37,7 +37,7 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         playerMovement.Move(MoveInputDirection());
         playerMovement.MoveCamera(MoveCameraDirection());
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.Plus))
         {
             playerAttack.Shoot();
         }
@@ -48,15 +48,15 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 dir = this.transform.forward * verticalInput + this.transform.right * horizontalInput;
+        Vector3 dir = transform.forward * verticalInput + transform.right * horizontalInput;
 
         return dir;
     }
 
     private Vector3 MoveCameraDirection()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 50f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 50f;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 100f;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 100f;
 
         yRotation += mouseX;
 
