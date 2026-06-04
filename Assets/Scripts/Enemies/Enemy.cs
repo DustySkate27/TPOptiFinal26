@@ -5,15 +5,15 @@ using UnityEngine;
 public class Enemy : IHealth, IUpdatable
 {
     private float hp;
-    private GameObject gameObject;
+    private Object gameObject;
     private EnemyMovement movement;
     private Transform target;
 
-    public Enemy(GameObject gameObject, Transform target)
+    public Enemy(Object gameObject, Transform target, Rigidbody targetRB, EnemySO scriptObj)
     {
         this.gameObject = gameObject;
-        movement = new EnemyMovement(gameObject.transform);
-        this.target = target;
+        movement = new EnemyMovement(gameObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor);
+        CustomUpdateManager.Instance.Register(this);
     }
 
     public void Tick(float deltaTime)

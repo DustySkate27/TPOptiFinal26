@@ -1,20 +1,17 @@
-﻿
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyMovement
 {
     Transform target;
 
-    private Enemy enemy;
     private Transform transform;
     private Vector3 currentSpeed;
 
-    private float speed = 5f;
-    private float maxForce = 5f;
-    private float rotationSpeed = 5f;
-    private float predictionFactor = 0.05f;
-    private float slowingRadius = 15f;
+    private float speed;
+    private float maxForce;
+    private float rotationSpeed;
+    private float predictionFactor;
+    private Rigidbody targetRB;
 
     private Collider[] colliders;
     private float personalArea;
@@ -22,9 +19,15 @@ public class EnemyMovement
     private int colliderCapacity;
     private LayerMask obsMask;
 
-    public EnemyMovement(Transform transform)
+    public EnemyMovement(Transform transform, Transform target, Rigidbody targetRB, float speed, float maxForce, float rotationSpeed, float predictionFactor)
     {
         this.transform = transform;
+        this.speed = speed;
+        this.maxForce = maxForce;
+        this.rotationSpeed = rotationSpeed;
+        this.predictionFactor = predictionFactor;
+        this.target = target;
+        this.targetRB = targetRB;
     }
 
     public void Pursuit()
@@ -50,7 +53,7 @@ public class EnemyMovement
             if (forwardDot < 0) t *= 1.2f; //Si direccion con prediccion => aumenta aun mas prediccion
         }
 
-        var futurePosition = target.position + GameManager.playerRigidbody.linearVelocity * t; //Añade a la posicion enemiga la posicion del objetivo por la prediccion
+        var futurePosition = target.position + targetRB.linearVelocity * t; //Añade a la posicion enemiga la posicion del objetivo por la prediccion
 
         var dir = futurePosition - transform.position; //direccion prediciendo al objetivo
         var desired = dir.normalized * speed; //Direccion a la que va a ir el enemigo

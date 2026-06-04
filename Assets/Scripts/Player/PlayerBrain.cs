@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 {
+
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float shootRange;
@@ -12,6 +13,8 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private PlayerMovement playerMovement;
     private PlayerAttack playerAttack;
+
+    private float hp;
 
     private void Start()
     {
@@ -65,9 +68,9 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         return dir;
     } 
 
-    public void TakeDamage(float damage)
+    public float TakeDamage(float damage)
     {
-
+        return hp -= damage;
     }
 
 
