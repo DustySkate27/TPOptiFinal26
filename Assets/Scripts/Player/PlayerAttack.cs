@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack
@@ -22,17 +23,12 @@ public class PlayerAttack
 
         if (Physics.Raycast(ray, out RaycastHit hit, distance, enemyLayer))
         {
+            Dictionary<UnityEngine.Object, Enemy> enemyDick = ServiceLocator.Get<Dictionary<UnityEngine.Object, Enemy>>();
 
-            /*
-            foreach (Enemy enemy in EnemyManager.Instance.enemies)
+            if (enemyDick.TryGetValue(hit.collider.gameObject, out Enemy enemy))
             {
-                if (enemy.col == hit.collider)
-                {
-                    enemy.TakeDamage(damage);
-                    break;
-                }
+                Debug.Log(enemy.TakeDamage(1f));
             }
-            */
         }
     }
 }

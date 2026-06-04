@@ -16,21 +16,20 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
 
     #region EVENTS
-    public static Action OnWinCondition;
-    public static Action PreComp => () => 
+    public Action OnWinCondition;
+    public Action ServicesRegistrations => () => 
     {
-        Debug.Log("uwu");
-        Debug.Log("owo");
-        Debug.Log(":v");
+        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+        ServiceLocator.Register(waveManager.enemies);
+
     }; //Todo lo que necesite PreComp en pantalla de carga
     #endregion
 
     private void Awake()
     {
-        OnWinCondition += StopTime;
-        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+        ServicesRegistrations?.Invoke();
 
-        PreComp?.Invoke();
+        OnWinCondition += StopTime;
     }
 
     public void LoadScene(string name)

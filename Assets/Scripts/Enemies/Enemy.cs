@@ -14,6 +14,7 @@ public class Enemy : IHealth, IUpdatable
         CustomUpdateManager.Instance.Register(this);
 
         this.gameObject = gameObject;
+        hp = scriptObj.hp;
         movement = new EnemyMovement(gameObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor);
     }
 
@@ -26,6 +27,7 @@ public class Enemy : IHealth, IUpdatable
     public float TakeDamage(float damage)
     {
         hp -= damage;
+
         return hp;
     }
 

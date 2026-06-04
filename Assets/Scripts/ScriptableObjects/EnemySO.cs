@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemySO : ScriptableObject
 {
     public GameObject prefab;
+    public float hp;
     public float speed;
     public float maxForce;
     public float rotationSpeed;
