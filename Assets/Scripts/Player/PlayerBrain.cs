@@ -4,6 +4,7 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 {
 
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float shootRange;
     [SerializeField] private LayerMask enemyLayer;
@@ -19,7 +20,7 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
     private void Start()
     {
         playerAttack = new PlayerAttack(spawnPoint, playerCamera, shootRange, enemyLayer);
-        playerMovement = new PlayerMovement(this.transform,playerCamera.transform , 50f);
+        playerMovement = new PlayerMovement(transform, rb, playerCamera.transform, 1000f);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -34,8 +35,8 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     public void Tick(float deltaTime)
     {
-        playerMovement.Move(MoveInputDirection());
         playerMovement.MoveCamera(MoveCameraDirection());
+        playerMovement.Move(MoveInputDirection());
 
         if (Input.GetKeyDown(KeyCode.Plus))
         {
