@@ -26,13 +26,9 @@ public class WaveManager
 
     private void SpawnEnemy(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
-        //Enemy enemy = new Enemy(enemySO.prefab, target, targetRB, enemySO);
-        //UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
-        //waveDict.Add(catchedRef, enemy);
-
-        Enemy enemy = new Enemy(enemySO.prefab, target, targetRB, enemySO);
-        UnityEngine.Object entity = GameManager.CreateEntity(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
-        waveDict.Add(entity, enemy);
+        UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
+        Enemy enemy = new Enemy(catchedRef.GameObject(), target, targetRB, enemySO);
+        waveDict.Add(catchedRef, enemy);
     }
 
     private void EnemySubstract(Enemy enemy, float damage)
