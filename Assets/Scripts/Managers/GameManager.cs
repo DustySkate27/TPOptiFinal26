@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     #region SERIFS
-    [SerializeField] public EnemySO enemySO;
-    [SerializeField] public Rigidbody targetRB;
-    [SerializeField] public Transform targetTransform;
-    [SerializeField] public List<Transform> spawnList;
+    public EnemySO enemySO;
+    public Rigidbody targetRB;
+    public Transform targetTransform;
+    public List<Transform> spawnList;
     #endregion
 
     private WaveManager waveManager;
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public Action ServicesRegistrations => () => 
     {
         waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
-        ServiceLocator.Register(waveManager.enemies);
+        ServiceLocator.Register(waveManager.waveDict);
 
     }; //Todo lo que necesite PreComp en pantalla de carga
     #endregion
@@ -51,5 +51,10 @@ public class GameManager : MonoBehaviour
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
     {
         return Instantiate(entity, transform);
+    }
+
+    public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        return Instantiate(entity, spawnPosition, spawnRotation);
     }
 }

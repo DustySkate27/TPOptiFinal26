@@ -17,18 +17,18 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private float hp;
 
-    private void Start()
+    private void Awake()
     {
+        CustomUpdateManager.Instance.Register(this);
+
         playerAttack = new PlayerAttack(spawnPoint, playerCamera, shootRange, enemyLayer);
         playerMovement = new PlayerMovement(transform, rb, playerCamera.transform, 1000f);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        CustomUpdateManager.Instance.Register(this);
     }
 
-    private void OnDestroy()
+    private void PlayerLoses()
     {
         CustomUpdateManager.Instance.Unregister(this);
     }
@@ -56,8 +56,8 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private Vector3 MoveCameraDirection()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 100f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 100f;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 200f;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 200f;
 
         yRotation += mouseX;
 

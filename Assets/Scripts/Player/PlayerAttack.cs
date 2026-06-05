@@ -23,11 +23,12 @@ public class PlayerAttack
 
         if (Physics.Raycast(ray, out RaycastHit hit, distance, enemyLayer))
         {
-            Dictionary<UnityEngine.Object, Enemy> enemyDick = ServiceLocator.Get<Dictionary<UnityEngine.Object, Enemy>>();
+            Dictionary<UnityEngine.Object, Enemy> enemyDict = ServiceLocator.Get<Dictionary<UnityEngine.Object, Enemy>>();
 
-            if (enemyDick.TryGetValue(hit.collider.gameObject, out Enemy enemy))
+            if (enemyDict.TryGetValue(hit.collider.gameObject, out Enemy enemy))
             {
-                Debug.Log(enemy.TakeDamage(1f));
+                Debug.Log("RECIBO ATAQUE");
+                enemy.TakeDamage(0f);
             }
         }
     }
