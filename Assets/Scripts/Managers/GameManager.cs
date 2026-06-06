@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,21 +16,21 @@ public class GameManager : MonoBehaviour
 
     private WaveManager waveManager;
 
-    #region EVENTS
-    public Action OnWinCondition;
-    public Action ServicesRegistrations => () => 
-    {
-        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
-        ServiceLocator.Register(waveManager.waveDict);
-
-    }; //Todo lo que necesite PreComp en pantalla de carga
-    #endregion
-
     private void Awake()
     {
-        ServicesRegistrations?.Invoke();
+        ServicesRegistrations();   
+    }
 
-        OnWinCondition += StopTime;
+    private void ServicesRegistrations()
+    {
+        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+        ServiceLocator.Register(waveManager.waveReferences);
+        ServiceLocator.Register(waveManager.waveSize);
+    }
+    public static void WinCond()
+    {
+        Time.timeScale = 0f;
+        Debug.Log("You Win!!");
     }
 
     public void LoadScene(string name)
@@ -43,10 +44,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().ToString());
     }
 
-    public void StopTime()
-    {
-        Time.timeScale = 0f;
-    }
 
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
     {
