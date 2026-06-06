@@ -20,13 +20,13 @@ public class GameManager : MonoBehaviour
     {
         ServicesRegistrations();
 
-        EventBus.Subscribe<WinGameEvent>(WinCond);
+        //EventBus.Subscribe<WinGameEvent>(WinCond);
         EventBus.Subscribe<LoseGameEvent>(LoadScene);
     }
 
     private void OnDestroy()
     {
-        EventBus.Unsubscribe<WinGameEvent>(WinCond);
+        //EventBus.Unsubscribe<WinGameEvent>(WinCond);
         EventBus.Unsubscribe<LoseGameEvent>(LoadScene);
     }
 
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(waveManager.waveSize);
     }
-    public static void WinCond(WinGameEvent winEvent)
+    public static void WinCond()
     {
         Time.timeScale = 0f;
         Debug.Log("You Win!!");
