@@ -27,7 +27,6 @@ public class PlayerAttack
 
             if (enemyDict.TryGetValue(hit.collider.gameObject, out Enemy enemy))
             {
-                Debug.Log("RECIBO ATAQUE");
                 enemy.TakeDamage(0f);
             }
         }

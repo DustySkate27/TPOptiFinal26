@@ -18,7 +18,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        ServicesRegistrations();   
+        ServicesRegistrations();
+
+        EventBus.Subscribe<WinGameEvent>(WinCond);
+        EventBus.Subscribe<LoseGameEvent>(LoadScene);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus.Unsubscribe<WinGameEvent>(WinCond);
+        EventBus.Unsubscribe<LoseGameEvent>(LoadScene);
     }
 
     private void ServicesRegistrations()
@@ -27,15 +36,17 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(waveManager.waveSize);
     }
-    public static void WinCond()
+    public static void WinCond(WinGameEvent winEvent)
     {
         Time.timeScale = 0f;
         Debug.Log("You Win!!");
     }
 
-    public void LoadScene(string name)
+    public void LoadScene(LoseGameEvent winEvent)
     {
-        SceneManager.LoadScene(name);
+        //SceneManager.LoadScene(name);
+        Time.timeScale = 0f;
+        Debug.Log("You Lose");
     }
 
     public void ResetScene()
@@ -43,7 +54,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().ToString());
     }
-
 
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
     {
