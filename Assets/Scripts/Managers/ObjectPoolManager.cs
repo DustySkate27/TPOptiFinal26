@@ -72,9 +72,9 @@ public class ObjectPoolManager
         return spawneableObj;
     }
 
-    public static void ReturnObjectToPool(GameObject obj)
+    public static void ReturnObjectToPool(UnityEngine.Object obj)
     {
-        string goName = obj.name.Replace("(Clone)", string.Empty);
+        string goName = obj.GameObject().name.Replace("(Clone)", string.Empty);
 
         PooledObjectInfo pool = ObjectPools.Find(pool => pool.LookupString == goName);
 
@@ -84,8 +84,8 @@ public class ObjectPoolManager
         }
         else
         {
-            obj.SetActive(false);
-            pool.inactiveObjects.Add(obj);
+            obj.GameObject().SetActive(false);
+            pool.inactiveObjects.Add(obj.GameObject());
         }
     }
 }

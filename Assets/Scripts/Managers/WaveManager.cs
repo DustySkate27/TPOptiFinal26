@@ -16,7 +16,8 @@ public class WaveManager : IUpdatable
 
     public Dictionary<UnityEngine.Object, Enemy> waveReferences;
 
-    public Dictionary<int, (int baseAmount,int currentAmount)> waveSize;
+    public Dictionary<int, int> waveSize;
+    private int currentAmount = 0;
     private int currentWave = 0;
 
     public WaveManager(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
@@ -27,36 +28,49 @@ public class WaveManager : IUpdatable
         this.spawnList = spawnList;
 
         waveReferences = new Dictionary<UnityEngine.Object, Enemy>();
-        waveSize = new Dictionary<int, (int baseAmount,int currentAmount)>();
+        waveSize = new Dictionary<int, int>();
 
-        waveSize.Add(0, (3, 3));
-        waveSize.Add(1, (7, 7));
-        waveSize.Add(2, (15, 15));
+        waveSize.Add(0, 3);
+        waveSize.Add(1, 7);
+        waveSize.Add(2, 15);
+        WaveSet();
     }
 
     public void Tick(float deltaTime)
     {
-        if (waveSize[currentWave].currentAmount == 0)
+        if (currentAmount == 0)
             WaveSet();
+    }
+    private void WaveSet()
+    {
+        if (currentWave < waveSize.Count - 1)
+        {
+            for (int i = 0; i < waveSize[currentWave]; i++)
+                SpawnEnemy(enemySO, target, targetRB, spawnList);
+
+            currentAmount = waveSize[currentWave];
+            currentWave++;
+        }
+
+        else
+            EventBus.Publish(new WinGameEvent());
     }
     
     private void SpawnEnemy(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
         UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
-        Enemy enemy = new Enemy(catchedRef.GameObject(), target, targetRB, enemySO);
-        waveReferences.Add(catchedRef, enemy);
+        waveReferences.Add(catchedRef, new Enemy(catchedRef, target, targetRB, enemySO));
+        
     }
 
-    private void WaveSet()
+    public void OnEnemyDeadCond(DeadEnemyEvent dead)
     {
-        if (currentWave < waveSize.Count - 1)
-        {
-            for (int i = 0; i < waveSize[currentWave].baseAmount; i++)
-                SpawnEnemy(enemySO, target, targetRB, spawnList);
-        }
+        ObjectPoolManager.ReturnObjectToPool(dead.objectInstance);
 
-        else
-            GameManager.WinCond();
+        CustomUpdateManager.Instance.Unregister(waveReferences[dead.objectInstance]);
+
+        waveReferences.Remove(dead.objectInstance);
+
+        currentAmount--;
     }
-
 }

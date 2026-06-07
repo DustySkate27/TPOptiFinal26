@@ -56,8 +56,8 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private Vector3 MoveCameraDirection()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 200f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 200f;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 400f;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 400f;
 
         yRotation += mouseX;
 
@@ -69,9 +69,9 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         return dir;
     } 
 
-    public float TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        return hp -= damage;
+        hp -= damage;
     }
 
 

@@ -27,7 +27,7 @@ public class PlayerAttack
 
             if (enemyDict.TryGetValue(hit.collider.gameObject, out Enemy enemy))
             {
-                enemy.TakeDamage(0f);
+                enemy.TakeDamage(1f);
             }
         }
     }

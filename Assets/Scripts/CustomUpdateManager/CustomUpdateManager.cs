@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class CustomUpdateManager : MonoBehaviour
     public static CustomUpdateManager Instance;
 
     private List<IUpdatable> updatables = new List<IUpdatable>();
+    private List<IUpdatable> pending = new List<IUpdatable>();
+    private int currentIndex;
 
     private void Awake()
     {
@@ -24,21 +27,25 @@ public class CustomUpdateManager : MonoBehaviour
 
     void Update()
     {
-        foreach (var u in updatables)
+        for (currentIndex = 0; currentIndex <= updatables.Count -1 ; currentIndex++)
         {
-            u.Tick(Time.deltaTime); 
+            updatables[currentIndex].Tick(Time.deltaTime); 
         }
+
+        updatables.AddRange(pending);
+        pending.Clear();
     }
 
     public void Register(IUpdatable updatable)
     {
         if (!updatables.Contains(updatable))
-            updatables.Add(updatable);
+            pending.Add(updatable);
     }
 
     public void Unregister(IUpdatable updatable)
     {
         updatables.Remove(updatable);
+        currentIndex--;
     }
 
 }

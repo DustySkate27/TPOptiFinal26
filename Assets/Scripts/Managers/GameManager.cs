@@ -18,41 +18,51 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+
         ServicesRegistrations();
 
-        //EventBus.Subscribe<WinGameEvent>(WinCond);
-        EventBus.Subscribe<LoseGameEvent>(LoadScene);
-    }
-
-    private void OnDestroy()
-    {
-        //EventBus.Unsubscribe<WinGameEvent>(WinCond);
-        EventBus.Unsubscribe<LoseGameEvent>(LoadScene);
+        EventSubscriptions();
     }
 
     private void ServicesRegistrations()
     {
-        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(waveManager.waveSize);
     }
-    public static void WinCond()
+
+    private void EventSubscriptions()
+    {
+        EventBus.Subscribe<WinGameEvent>(OnWinCond);
+        EventBus.Subscribe<LoseGameEvent>(OnLoseCond);
+        EventBus.Subscribe<DeadEnemyEvent>(waveManager.OnEnemyDeadCond);
+    }
+    private void EventUnsubscriptions()
+    {
+        EventBus.Unsubscribe<WinGameEvent>(OnWinCond);
+        EventBus.Unsubscribe<LoseGameEvent>(OnLoseCond);
+    }
+
+    public void OnWinCond(WinGameEvent winEvent)
     {
         Time.timeScale = 0f;
         Debug.Log("You Win!!");
+        EventUnsubscriptions();
     }
 
-    public void LoadScene(LoseGameEvent winEvent)
+    public void OnLoseCond(LoseGameEvent loseEvent)
     {
-        //SceneManager.LoadScene(name);
         Time.timeScale = 0f;
         Debug.Log("You Lose");
+        EventUnsubscriptions();
     }
 
     public void ResetScene()
     {
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().ToString());
+
+        EventSubscriptions();
     }
 
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemySO
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   prefab: {fileID: 94628338394512339, guid: 04d1496cb2f0cde4ca2b2571ff342b97, type: 3}
-  hp: 10
+  hp: 1
   speed: 5
   maxForce: 5
   rotationSpeed: 5
