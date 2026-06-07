@@ -29,6 +29,7 @@ public class WaveManager : IUpdatable
 
         waveReferences = new Dictionary<UnityEngine.Object, Enemy>();
         waveSize = new Dictionary<int, int>();
+        CustomUpdateManager.Instance.Register(this);
 
         waveSize.Add(0, 3);
         waveSize.Add(1, 7);
@@ -41,6 +42,7 @@ public class WaveManager : IUpdatable
         if (currentAmount == 0)
             WaveSet();
     }
+
     private void WaveSet()
     {
         if (currentWave < waveSize.Count - 1)
