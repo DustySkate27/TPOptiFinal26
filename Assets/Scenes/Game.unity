@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: rb
       value: 
       objectReference: {fileID: 833670594}
+    - target: {fileID: 7623443563180199727, guid: b1efe0cf29660fa4c83dbec949c36c92, type: 3}
+      propertyPath: shootRange
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -810,8 +814,8 @@ Transform:
   m_GameObject: {fileID: 1489552369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.7331, y: 1, z: 2.6769}
+  m_LocalPosition: {x: -3.7085, y: -0, z: -27.5947}
+  m_LocalScale: {x: 10.60852, y: 1, z: 16.077614}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
