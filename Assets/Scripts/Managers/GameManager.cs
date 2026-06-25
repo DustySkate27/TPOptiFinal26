@@ -1,9 +1,6 @@
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +50,7 @@ public class GameManager : MonoBehaviour
     public void OnLoseCond(LoseGameEvent loseEvent)
     {
         Time.timeScale = 0f;
+
         Debug.Log("You Lose");
         EventUnsubscriptions();
     }

@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEnemySO", menuName = "ScriptableObjects/Enemy")]

@@ -11,8 +11,10 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private float horizontalInput, verticalInput;
     private float xRotation, yRotation;
+    private float sensitivity = 500f;
 
     private PlayerMovement playerMovement;
+    private PlayerMovement playerRun;
     private PlayerAttack playerAttack;
 
     private float hp;
@@ -22,13 +24,14 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         CustomUpdateManager.Instance.Register(this);
 
         playerAttack = new PlayerAttack(spawnPoint, playerCamera, shootRange, enemyLayer);
-        playerMovement = new PlayerMovement(transform, rb, playerCamera.transform, 1000f);
+        playerMovement = new PlayerMovement(transform, rb, playerCamera.transform, 2000f);
+        playerRun = new PlayerMovement(transform, rb, playerCamera.transform, 4000f);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void PlayerLoses()
+    private void PlayerLoses(PlayerDead playerDead)
     {
         CustomUpdateManager.Instance.Unregister(this);
     }
@@ -38,7 +41,12 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         playerMovement.MoveCamera(MoveCameraDirection());
         playerMovement.Move(MoveInputDirection());
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            playerRun.Move(MoveInputDirection());
+        }
+
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
         {
             playerAttack.Shoot();
         }
@@ -56,8 +64,8 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private Vector3 MoveCameraDirection()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * 400f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * 400f;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity;
 
         yRotation += mouseX;
 

@@ -1,11 +1,5 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Pool;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using Unity.VisualScripting;
-using Unity.Mathematics;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class WaveManager : IUpdatable
 {
@@ -19,6 +13,9 @@ public class WaveManager : IUpdatable
     public Dictionary<int, int> waveSize;
     private int currentAmount = 0;
     private int currentWave = 0;
+    private int countCheck = 0;
+    private float timePassed = 0f;
+    private float spawnInterval = 0.3f;
 
     public WaveManager(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
@@ -31,39 +28,50 @@ public class WaveManager : IUpdatable
         waveSize = new Dictionary<int, int>();
         CustomUpdateManager.Instance.Register(this);
 
-        waveSize.Add(0, 3);
-        waveSize.Add(1, 7);
-        waveSize.Add(2, 15);
+
+        waveSize.Add(0, 10);
+        waveSize.Add(1, 30);
+        waveSize.Add(2, 50);
+    
         WaveSet();
     }
 
     public void Tick(float deltaTime)
     {
-        if (currentAmount == 0)
+        if (currentAmount == 0 || countCheck != 0)
             WaveSet();
     }
 
     private void WaveSet()
     {
-        if (currentWave < waveSize.Count - 1)
+        timePassed += Time.deltaTime;
+        if (currentWave < waveSize.Count)
         {
-            for (int i = 0; i < waveSize[currentWave]; i++)
-                SpawnEnemy(enemySO, target, targetRB, spawnList);
-
-            currentAmount = waveSize[currentWave];
-            currentWave++;
-
+            if (timePassed > spawnInterval)
+            {
+                if (countCheck < waveSize[currentWave])
+                {
+                    SpawnEnemy(enemySO, target, targetRB, spawnList);
+                    countCheck++;
+                    timePassed = 0;
+                }
+                else
+                {
+                    currentWave++;
+                    countCheck = 0;
+                    timePassed = 0;
+                }
+            }
         }
-
         else
             EventBus.Publish(new WinGameEvent());
     }
-    
+
     private void SpawnEnemy(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
         UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
         waveReferences.Add(catchedRef, new Enemy(catchedRef, target, targetRB, enemySO));
-        
+        currentAmount++;
     }
 
     public void OnEnemyDeadCond(DeadEnemyEvent dead)
