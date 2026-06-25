@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     public void OnLoseCond(LoseGameEvent loseEvent)
     {
         Time.timeScale = 0f;
-
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("You Lose");
         EventUnsubscriptions();
     }
