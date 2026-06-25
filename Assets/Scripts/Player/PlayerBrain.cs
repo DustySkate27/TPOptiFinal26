@@ -38,7 +38,7 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         playerMovement.MoveCamera(MoveCameraDirection());
         playerMovement.Move(MoveInputDirection());
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetMouseButtonDown(0))
         {
             playerAttack.Shoot();
         }

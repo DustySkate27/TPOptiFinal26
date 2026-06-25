@@ -52,6 +52,7 @@ public class WaveManager : IUpdatable
 
             currentAmount = waveSize[currentWave];
             currentWave++;
+
         }
 
         else
