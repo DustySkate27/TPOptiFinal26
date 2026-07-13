@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(SystemInfo.supportsComputeShaders);
         waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
 
         ServicesRegistrations();
