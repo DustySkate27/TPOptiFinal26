@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
+public class PlayerBrain : IUpdatable, IHealth
 {
-
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private float shootRange;
-    [SerializeField] private LayerMask enemyLayer;
+    private Transform playerTransform;
+    private Rigidbody rb;
+    private Camera playerCamera;
+    private float shootRange;
+    private LayerMask enemyLayer;
 
     private float horizontalInput, verticalInput;
     private float xRotation, yRotation;
@@ -19,13 +18,19 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
 
     private float hp;
 
-    private void Awake()
+    public PlayerBrain(Transform _playerTransform, Rigidbody playerRB, Camera camera, float _shootRange, LayerMask _enemyLayer)
     {
+        playerTransform = _playerTransform;
+        rb = playerRB;
+        playerCamera = camera;
+        shootRange = _shootRange;
+        enemyLayer = _enemyLayer;
+
         CustomUpdateManager.Instance.Register(this);
 
-        playerAttack = new PlayerAttack(spawnPoint, playerCamera, shootRange, enemyLayer);
-        playerMovement = new PlayerMovement(transform, rb, playerCamera.transform, 2000f);
-        playerRun = new PlayerMovement(transform, rb, playerCamera.transform, 4000f);
+        playerAttack = new PlayerAttack(playerCamera, shootRange, enemyLayer);
+        playerMovement = new PlayerMovement(playerTransform, rb, playerCamera.transform, 2000f);
+        playerRun = new PlayerMovement(playerTransform, rb, playerCamera.transform, 4000f);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -57,7 +62,7 @@ public class PlayerBrain : MonoBehaviour, IUpdatable, IHealth
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 dir = transform.forward * verticalInput + transform.right * horizontalInput;
+        Vector3 dir = playerTransform.forward * verticalInput + playerTransform.right * horizontalInput;
 
         return dir;
     }

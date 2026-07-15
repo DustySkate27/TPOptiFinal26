@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,17 +7,25 @@ public class GameManager : MonoBehaviour
 {
     #region SERIFS
     public EnemySO enemySO;
-    public Rigidbody targetRB;
-    public Transform targetTransform;
+    public PlayerSO playerSO;
+    public Camera playerCamera;
+    
+
     public List<Transform> spawnList;
     #endregion
 
+    private PlayerBrain playerBrain;
     private WaveManager waveManager;
 
     private void Awake()
     {
         Debug.Log(SystemInfo.supportsComputeShaders);
-        waveManager = new WaveManager(enemySO, targetTransform, targetRB, spawnList);
+
+        Rigidbody playerInstanceRef = CreatePlayer(playerSO);
+
+        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO.shootRange, playerSO.enemyLayer);
+
+        waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
 
         ServicesRegistrations();
 
@@ -64,6 +73,10 @@ public class GameManager : MonoBehaviour
         EventSubscriptions();
     }
 
+    public static Rigidbody CreatePlayer(PlayerSO playerSO)
+    {
+        return Instantiate(playerSO.rbPrefab, playerSO.spawnPoint.position, Quaternion.identity);
+    }
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Transform transform)
     {
         return Instantiate(entity, transform);

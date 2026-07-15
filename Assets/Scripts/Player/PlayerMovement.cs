@@ -18,7 +18,7 @@ public class PlayerMovement
     public void Move(Vector3 dir)
     {
         rb.linearVelocity = (dir * velocity * Time.deltaTime);
-        //rb.AddForce(dir * velocity * Time.deltaTime, ForceMode.Force);
+        cameraTransform.position = playerTransform.position;
     }
 
     public void MoveCamera(Vector2 dir)

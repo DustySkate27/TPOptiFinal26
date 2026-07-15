@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class PlayerAttack
 {
-    private Transform spawn;
     private  Camera playerCamera;
     private float distance;
     private LayerMask enemyLayer;
 
-    public PlayerAttack(Transform spawnPoint, Camera playerCamera, float shootDistance, LayerMask detectionLayer)
+    public PlayerAttack(Camera playerCamera, float shootDistance, LayerMask detectionLayer)
     {
-        spawn = spawnPoint;
         this.playerCamera = playerCamera;
         distance = shootDistance;
         enemyLayer = detectionLayer;
