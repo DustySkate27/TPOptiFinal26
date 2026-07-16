@@ -2,22 +2,31 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+using static UnityEditor.FilePathAttribute;
 
 public class GameManager : MonoBehaviour
 {
+    private GameManager gameManage;
+
     #region SERIFS
     public EnemySO enemySO;
     public PlayerSO playerSO;
     public Camera playerCamera;
     public List<Transform> spawnList;
+
+    public ParticleSystem shootParticles;
     #endregion
 
     private PlayerBrain playerBrain;
     private WaveManager waveManager;
+    private ParticlesController particlesController;
 
     public int targetFrameRate = 60;
     private void Awake()
     {
+        gameManage = this;
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = targetFrameRate;
 
@@ -26,6 +35,8 @@ public class GameManager : MonoBehaviour
         playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO.shootRange, playerSO.enemyLayer);
 
         waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
+
+        particlesController = new ParticlesController(shootParticles, this);
 
         ServicesRegistrations();
 
@@ -36,6 +47,8 @@ public class GameManager : MonoBehaviour
     {
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(waveManager.waveSize);
+        ServiceLocator.Register(gameManage);
+        ServiceLocator.Register(particlesController);
     }
 
     private void EventSubscriptions()
@@ -85,5 +98,14 @@ public class GameManager : MonoBehaviour
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Vector3 spawnPosition, Quaternion spawnRotation)
     {
         return Instantiate(entity, spawnPosition, spawnRotation);
+    }
+
+    public void SpawnParticles(Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        ParticleSystem particlesInstance = Instantiate(shootParticles, spawnPosition, spawnRotation);
+
+        float totalDuration = particlesInstance.main.duration + particlesInstance.main.startLifetime.constantMax;
+
+        Destroy(particlesInstance.gameObject, totalDuration);
     }
 }

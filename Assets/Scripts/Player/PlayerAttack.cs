@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class PlayerAttack
 {
@@ -22,6 +23,8 @@ public class PlayerAttack
         if (Physics.Raycast(ray, out RaycastHit hit, distance, enemyLayer))
         {
             Debug.Log($"Hit: {hit.collider.gameObject.name} en posición {hit.point}");
+
+            ServiceLocator.Get<ParticlesController>().SpawnShootParticle(hit.transform.position, hit.transform.rotation);
 
             Dictionary<UnityEngine.Object, Enemy> enemyDict = ServiceLocator.Get<Dictionary<UnityEngine.Object, Enemy>>();
 
