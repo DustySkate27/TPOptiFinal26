@@ -243,6 +243,8 @@ MonoBehaviour:
   - {fileID: 2138787032}
   - {fileID: 259772446}
   - {fileID: 1989471698}
+  shootParticles: {fileID: 1151503085182284241, guid: d59676ee944599944afc3b17594ce099, type: 3}
+  targetFrameRate: 60
 --- !u!4 &109218316
 Transform:
   m_ObjectHideFlags: 0

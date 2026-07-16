@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
 
-        particlesController = new ParticlesController(shootParticles, this);
+        particlesController = new ParticlesController(shootParticles);
 
         ServicesRegistrations();
 
@@ -100,12 +100,8 @@ public class GameManager : MonoBehaviour
         return Instantiate(entity, spawnPosition, spawnRotation);
     }
 
-    public void SpawnParticles(Vector3 spawnPosition, Quaternion spawnRotation)
+    public static ParticleSystem SpawnParticles(ParticleSystem shootParticles, Vector3 spawnPosition, Quaternion spawnRotation)
     {
-        ParticleSystem particlesInstance = Instantiate(shootParticles, spawnPosition, spawnRotation);
-
-        float totalDuration = particlesInstance.main.duration + particlesInstance.main.startLifetime.constantMax;
-
-        Destroy(particlesInstance.gameObject, totalDuration);
+        return Instantiate(shootParticles, spawnPosition, spawnRotation);
     }
 }

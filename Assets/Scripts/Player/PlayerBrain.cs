@@ -50,11 +50,6 @@ public class PlayerBrain : IUpdatable, IHealth
         {
             playerRun.Move(MoveInputDirection());
         }
-
-        if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
-        {
-            playerAttack.Shoot();
-        }
     }
 
     private Vector3 MoveInputDirection()
