@@ -10,7 +10,7 @@ public class PlayerBrain : IUpdatable, IHealth
 
     private float horizontalInput, verticalInput;
     private float xRotation, yRotation;
-    private float sensitivity = 500f;
+    private float sensitivity = 100f;
 
     private PlayerMovement playerMovement;
     private PlayerMovement playerRun;
@@ -29,8 +29,8 @@ public class PlayerBrain : IUpdatable, IHealth
         CustomUpdateManager.Instance.Register(this);
 
         playerAttack = new PlayerAttack(playerCamera, shootRange, enemyLayer);
-        playerMovement = new PlayerMovement(playerTransform, rb, playerCamera.transform, 2000f);
-        playerRun = new PlayerMovement(playerTransform, rb, playerCamera.transform, 4000f);
+        playerMovement = new PlayerMovement(playerTransform, rb, playerCamera.transform, 500f);
+        playerRun = new PlayerMovement(playerTransform, rb, playerCamera.transform, 1000f);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

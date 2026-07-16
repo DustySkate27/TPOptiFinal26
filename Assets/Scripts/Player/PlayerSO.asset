@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcaf8aae043f816459045b30ed19eaf0, type: 3}
   m_Name: PlayerSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSO
-  rbPrefab: {fileID: 0}
+  rbPrefab: {fileID: -4212495222109432706, guid: b1efe0cf29660fa4c83dbec949c36c92, type: 3}
   spawnPoint: {fileID: 2769835732712258876, guid: 5dbbcb83185ea08428e0b011728bdb9b, type: 3}
   shootRange: 100
   enemyLayer:

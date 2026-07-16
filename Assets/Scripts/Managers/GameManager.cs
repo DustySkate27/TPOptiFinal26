@@ -9,17 +9,17 @@ public class GameManager : MonoBehaviour
     public EnemySO enemySO;
     public PlayerSO playerSO;
     public Camera playerCamera;
-    
-
     public List<Transform> spawnList;
     #endregion
 
     private PlayerBrain playerBrain;
     private WaveManager waveManager;
 
+    public int targetFrameRate = 60;
     private void Awake()
     {
-        Debug.Log(SystemInfo.supportsComputeShaders);
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = targetFrameRate;
 
         Rigidbody playerInstanceRef = CreatePlayer(playerSO);
 
