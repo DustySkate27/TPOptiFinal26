@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class PlayerAttack : IUpdatable
 {
@@ -11,12 +10,17 @@ public class PlayerAttack : IUpdatable
     private float rateOfFire = 0.5f;
 
     private float currentTime = 0f;
+    private ParticleManager particleManager;
+    private LineRenderer line;
 
     public PlayerAttack(Camera playerCamera, float shootDistance, LayerMask detectionLayer)
     {
         this.playerCamera = playerCamera;
         distance = shootDistance;
         enemyLayer = detectionLayer;
+
+        particleManager = ServiceLocator.Get<ParticleManager>();
+        line = ServiceLocator.Get<LineRenderer>();
 
         CustomUpdateManager.Instance.Register(this);
     }
@@ -30,30 +34,30 @@ public class PlayerAttack : IUpdatable
                 currentTime = 0f;
             }
         }
+        else
+        {
+            line.gameObject.SetActive(false);
+        }
 
         if (currentTime < rateOfFire + 0.5f)
         {
             currentTime += deltaTime;
         }
-
-        Debug.Log(currentTime);
     }
 
     public void Shoot()
     {
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
+        line.gameObject.SetActive(true);
+
         if (Physics.Raycast(ray, out RaycastHit collision, distance))
         {
-            ServiceLocator.Get<ParticlesController>().SpawnShootParticle(collision.point, Quaternion.LookRotation(collision.normal));
+            particleManager.SpawnParticle(collision.point, Quaternion.LookRotation(collision.normal));
         }
 
         if (Physics.Raycast(ray, out RaycastHit hit, distance, enemyLayer))
         {
-            //Debug.Log($"Hit: {hit.collider.gameObject.name} en posición {hit.point}");
-
-            //ServiceLocator.Get<ParticlesController>().SpawnShootParticle(hit.transform.position, hit.transform.rotation);
-
             Dictionary<UnityEngine.Object, Enemy> enemyDict = ServiceLocator.Get<Dictionary<UnityEngine.Object, Enemy>>();
 
             if (enemyDict.TryGetValue(hit.collider.gameObject, out Enemy enemy))

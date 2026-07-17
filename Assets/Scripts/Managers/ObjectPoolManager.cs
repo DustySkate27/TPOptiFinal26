@@ -24,6 +24,7 @@ public class ObjectPoolManager
             pool = new PooledObjectInfo() { Prefab = prefab };
             ObjectPools.Add(prefab, pool);
         }
+
         return pool;
     }
 
@@ -59,7 +60,6 @@ public class ObjectPoolManager
             // hay inactivos: reactiva el último (evita el costo de List.Remove por índice)
             spawneableObj = pool.inactiveObjects[lastIndex];
             pool.inactiveObjects.RemoveAt(lastIndex);
-
             spawneableObj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
             spawneableObj.SetActive(true);
         }

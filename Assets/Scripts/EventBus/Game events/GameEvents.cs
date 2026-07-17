@@ -10,11 +10,21 @@ public class PlayerDead : IGameEvent
 {
     public PlayerDead() { }
 }
-public class DeadEnemyEvent : IGameEvent
+public class DisableEntityEvent : IGameEvent
 {
     public UnityEngine.Object objectInstance;
 
-    public DeadEnemyEvent(UnityEngine.Object instance)
+    public DisableEntityEvent(UnityEngine.Object instance)
+    {
+        objectInstance = instance;
+    }
+}
+
+public class OnParticleEndEvent : IGameEvent
+{
+    public UnityEngine.Object objectInstance;
+
+    public OnParticleEndEvent(UnityEngine.Object instance)
     {
         objectInstance = instance;
     }

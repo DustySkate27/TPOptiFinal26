@@ -35,7 +35,7 @@ public class Enemy : IHealth, IUpdatable
 
     public void DestroyEnemy()
     {
-        EventBus.Publish(new DeadEnemyEvent(thisInstance));
+        EventBus.Publish(new DisableEntityEvent(thisInstance));
     }
 
 }

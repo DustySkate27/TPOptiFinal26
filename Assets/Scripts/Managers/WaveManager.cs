@@ -28,12 +28,10 @@ public class WaveManager : IUpdatable
         waveSize = new Dictionary<int, int>();
         CustomUpdateManager.Instance.Register(this);
 
-        
+
         waveSize.Add(0, 10);
         waveSize.Add(1, 30);
         waveSize.Add(2, 50);
-
-        //Acá me gustaría hacer el warm up de los enemigos, para que queden desactivados en escena.
 
         WarmUpEnemies(enemySO, 50);
         WaveSet();
@@ -82,7 +80,7 @@ public class WaveManager : IUpdatable
         ObjectPoolManager.WarmUp(enemySO.prefab, 50);
     }
 
-    public void OnEnemyDeadCond(DeadEnemyEvent dead)
+    public void OnEnemyDeadCond(DisableEntityEvent dead)
     {
         ObjectPoolManager.ReturnObjectToPool(dead.objectInstance);
 

@@ -55,16 +55,16 @@ public class CustomUpdateManager : MonoBehaviour
         pendingFixUpdate.Clear();
     }
 
-    private void LateUpdate()
-    {
-        for (currentIndexLateUpdate = 0; currentIndexLateUpdate <= latedUpdatables.Count - 1; currentIndexLateUpdate++)
-        {
-            latedUpdatables[currentIndexLateUpdate].Tick(Time.deltaTime);
-        }
+    //private void LateUpdate()
+    //{
+    //    for (currentIndexLateUpdate = 0; currentIndexLateUpdate <= latedUpdatables.Count - 1; currentIndexLateUpdate++)
+    //    {
+    //        latedUpdatables[currentIndexLateUpdate].Tick(Time.deltaTime);
+    //    }
 
-        latedUpdatables.AddRange(pendingLateUpdate);
-        pendingLateUpdate.Clear();
-    }
+    //    latedUpdatables.AddRange(pendingLateUpdate);
+    //    pendingLateUpdate.Clear();
+    //}
 
     public void Register(IUpdatable updatable)
     {

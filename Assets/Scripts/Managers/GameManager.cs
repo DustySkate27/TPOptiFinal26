@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using static UnityEditor.FilePathAttribute;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,31 +11,32 @@ public class GameManager : MonoBehaviour
     public PlayerSO playerSO;
     public Camera playerCamera;
     public List<Transform> spawnList;
-
-    public ParticleSystem shootParticles;
+    public GameObject particlePrefab;
+    public LineRenderer lineRenderer;
+    public Transform startOfLine;
     #endregion
 
     private PlayerBrain playerBrain;
     private WaveManager waveManager;
-    private ParticlesController particlesController;
+    private ParticleManager particleManager;
+    private LineRendManager lineManager;
 
-    public int targetFrameRate = 60;
+
     private void Awake()
     {
         gameManage = this;
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = targetFrameRate;
-
         Rigidbody playerInstanceRef = CreatePlayer(playerSO);
 
-        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO.shootRange, playerSO.enemyLayer);
+        lineManager = new LineRendManager(lineRenderer, startOfLine);
 
         waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
 
-        particlesController = new ParticlesController(shootParticles);
+        particleManager = new ParticleManager(particlePrefab);
 
         ServicesRegistrations();
+
+        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO.shootRange, playerSO.enemyLayer);
 
         EventSubscriptions();
     }
@@ -48,14 +46,16 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(waveManager.waveSize);
         ServiceLocator.Register(gameManage);
-        ServiceLocator.Register(particlesController);
+        ServiceLocator.Register(particleManager);
+        ServiceLocator.Register(lineManager.line);
     }
 
     private void EventSubscriptions()
     {
         EventBus.Subscribe<WinGameEvent>(OnWinCond);
         EventBus.Subscribe<LoseGameEvent>(OnLoseCond);
-        EventBus.Subscribe<DeadEnemyEvent>(waveManager.OnEnemyDeadCond);
+        EventBus.Subscribe<DisableEntityEvent>(waveManager.OnEnemyDeadCond);
+        EventBus.Subscribe<OnParticleEndEvent>(particleManager.OnParticleEnd);
     }
     private void EventUnsubscriptions()
     {
@@ -98,10 +98,5 @@ public class GameManager : MonoBehaviour
     public static UnityEngine.Object CreateEntity(UnityEngine.Object entity, Vector3 spawnPosition, Quaternion spawnRotation)
     {
         return Instantiate(entity, spawnPosition, spawnRotation);
-    }
-
-    public static ParticleSystem SpawnParticles(ParticleSystem shootParticles, Vector3 spawnPosition, Quaternion spawnRotation)
-    {
-        return Instantiate(shootParticles, spawnPosition, spawnRotation);
     }
 }
