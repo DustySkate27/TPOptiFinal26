@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     private AudioManager audioManager;
 
 
-
     private void Awake()
     {
         gameManage = this;
@@ -37,7 +36,6 @@ public class GameManager : MonoBehaviour
 
         particleManager = new ParticleManager(particlePrefab);
 
-
         audioManager = new AudioManager(audioSource, audioSource.transform);
 
         ServicesRegistrations();
@@ -47,16 +45,15 @@ public class GameManager : MonoBehaviour
         EventSubscriptions();
     }
 
-    private void ServicesRegistrations()
+    private void ServicesRegistrations() 
     {
         ServiceLocator.Register(waveManager.waveReferences);
-        ServiceLocator.Register(waveManager.waveSize);
         ServiceLocator.Register(gameManage);
         ServiceLocator.Register(particleManager);
         ServiceLocator.Register(lineManager);
     }
 
-    private void EventSubscriptions()
+    private void EventSubscriptions() //Additional subscriptions: UIManager (on its Awake)
     {
         EventBus.Subscribe<WinGameEvent>(OnWinCond);
         EventBus.Subscribe<LoseGameEvent>(OnLoseCond);
@@ -69,6 +66,13 @@ public class GameManager : MonoBehaviour
         EventBus.Unsubscribe<LoseGameEvent>(OnLoseCond);
     }
 
+    /*
+    public AudioSource CreateAudioSource()
+    {
+        AudioSource audioSource;
+        return audioSource = Instantiate(AudioSource);
+    }
+    */
     public void OnWinCond(WinGameEvent winEvent)
     {
         Time.timeScale = 0f;
@@ -78,8 +82,6 @@ public class GameManager : MonoBehaviour
 
     public void OnLoseCond(LoseGameEvent loseEvent)
     {
-
-
         Time.timeScale = 0f;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("You Lose");
@@ -108,11 +110,4 @@ public class GameManager : MonoBehaviour
         return Instantiate(entity, spawnPosition, spawnRotation);
     }
 
-    /*
-    public AudioSource CreateAudioSource()
-    {
-        AudioSource audioSource;
-        return audioSource = Instantiate(AudioSource);
-    }
-    */
 }

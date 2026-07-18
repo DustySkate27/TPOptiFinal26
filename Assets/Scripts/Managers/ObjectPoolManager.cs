@@ -10,11 +10,8 @@ public class PooledObjectInfo
 
 public class ObjectPoolManager
 {
-    // Pools indexadas por prefab (referencia), no por nombre.
     private static Dictionary<UnityEngine.Object, PooledObjectInfo> ObjectPools = new();
 
-    // Mapea cada instancia activa a la pool de la que vino, para poder
-    // devolverla sin necesidad de comparar nombres ni agregar componentes.
     private static Dictionary<GameObject, PooledObjectInfo> instanceToPool = new();
 
     private static PooledObjectInfo GetOrCreatePool(UnityEngine.Object prefab)
@@ -28,7 +25,6 @@ public class ObjectPoolManager
         return pool;
     }
 
-    // Precrea "count" instancias desactivadas y las deja cargadas en la pool.
     public static void WarmUp(UnityEngine.Object prefab, int count)
     {
         PooledObjectInfo pool = GetOrCreatePool(prefab);
@@ -51,13 +47,11 @@ public class ObjectPoolManager
 
         if (lastIndex < 0)
         {
-            // no hay inactivos: crea uno nuevo
             spawneableObj = GameManager.CreateEntity(objectToSpawn, spawnPosition, spawnRotation).GameObject();
             instanceToPool[spawneableObj] = pool;
         }
         else
         {
-            // hay inactivos: reactiva el último (evita el costo de List.Remove por índice)
             spawneableObj = pool.inactiveObjects[lastIndex];
             pool.inactiveObjects.RemoveAt(lastIndex);
             spawneableObj.transform.SetPositionAndRotation(spawnPosition, spawnRotation);

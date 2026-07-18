@@ -10,7 +10,7 @@ public class WaveManager : IUpdatable
 
     public Dictionary<UnityEngine.Object, Enemy> waveReferences;
 
-    public Dictionary<int, int> waveSize;
+    private Dictionary<int, int> waveSize;
     private int currentAmount = 0;
     private int currentWave = 0;
     private int countCheck = 0;
@@ -34,6 +34,7 @@ public class WaveManager : IUpdatable
         waveSize.Add(2, 50);
 
         WarmUpEnemies(enemySO, 50);
+        EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
         WaveSet();
     }
 
@@ -89,5 +90,9 @@ public class WaveManager : IUpdatable
         waveReferences.Remove(dead.objectInstance);
 
         currentAmount--;
+
+        EventBus.Publish(new UpdateTextEvent(currentAmount.ToString()));
+        if(currentAmount == 0) EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
+
     }
 }

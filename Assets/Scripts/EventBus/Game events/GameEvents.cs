@@ -55,3 +55,25 @@ public class OnPlaySound : IGameEvent
         position = transform.position;
     }
 }
+
+public class OnWaveInit : IGameEvent
+{
+    public int wave;
+    public int waveSize;
+
+    public OnWaveInit(int currentWave, int initialSize) 
+    {
+        wave = currentWave;
+        waveSize = initialSize;
+    }
+}
+
+public class UpdateTextEvent : IGameEvent
+{
+    public string text;
+
+    public UpdateTextEvent(string text)
+    {
+        this.text = text;
+    }
+}
