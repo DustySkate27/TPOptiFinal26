@@ -14,12 +14,15 @@ public class GameManager : MonoBehaviour
     public GameObject particlePrefab;
     public LineRenderer lineRenderer;
     public Transform startOfLine;
+    public AudioSource audioSource;
     #endregion
 
     private PlayerBrain playerBrain;
     private WaveManager waveManager;
     private ParticleManager particleManager;
     private LineRendManager lineManager;
+    private AudioManager audioManager;
+
 
 
     private void Awake()
@@ -34,9 +37,12 @@ public class GameManager : MonoBehaviour
 
         particleManager = new ParticleManager(particlePrefab);
 
+
+        audioManager = new AudioManager(audioSource, audioSource.transform);
+
         ServicesRegistrations();
 
-        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO.shootRange, playerSO.enemyLayer);
+        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO);
 
         EventSubscriptions();
     }
@@ -72,6 +78,8 @@ public class GameManager : MonoBehaviour
 
     public void OnLoseCond(LoseGameEvent loseEvent)
     {
+
+
         Time.timeScale = 0f;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("You Lose");
@@ -99,4 +107,12 @@ public class GameManager : MonoBehaviour
     {
         return Instantiate(entity, spawnPosition, spawnRotation);
     }
+
+    /*
+    public AudioSource CreateAudioSource()
+    {
+        AudioSource audioSource;
+        return audioSource = Instantiate(AudioSource);
+    }
+    */
 }

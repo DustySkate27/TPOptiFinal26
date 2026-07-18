@@ -9,4 +9,5 @@ public class EnemySO : ScriptableObject
     public float maxForce;
     public float rotationSpeed;
     public float predictionFactor;
+    public AudioClip destroySound;
 }

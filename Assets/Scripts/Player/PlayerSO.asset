@@ -18,3 +18,4 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  shootSound: {fileID: 8300000, guid: 2396c1b553780394fb099630bd2991eb, type: 3}

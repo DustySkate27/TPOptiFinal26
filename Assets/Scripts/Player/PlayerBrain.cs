@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class PlayerBrain : IUpdatable, IHealth
+public class PlayerBrain : IUpdatable,IFixedUpdatable , IHealth
 {
     private Transform playerTransform;
     private Rigidbody rb;
     private Camera playerCamera;
     private float shootRange;
     private LayerMask enemyLayer;
+    private AudioClip shootSound;
 
     private float horizontalInput, verticalInput;
     private float xRotation, yRotation;
@@ -18,19 +19,21 @@ public class PlayerBrain : IUpdatable, IHealth
 
     private float hp;
 
-    public PlayerBrain(Transform _playerTransform, Rigidbody playerRB, Camera camera, float _shootRange, LayerMask _enemyLayer)
+    public PlayerBrain(Transform _playerTransform, Rigidbody playerRB, Camera camera, PlayerSO playerSO)
     {
         playerTransform = _playerTransform;
         rb = playerRB;
         playerCamera = camera;
-        shootRange = _shootRange;
-        enemyLayer = _enemyLayer;
+        shootRange = playerSO.shootRange;
+        enemyLayer = playerSO.enemyLayer;
+        shootSound = playerSO.shootSound;
 
-        CustomUpdateManager.Instance.Register(this);
+        CustomUpdateManager.Instance.Register((IUpdatable)this);
+        CustomUpdateManager.Instance.Register((IFixedUpdatable)this);
 
-        playerAttack = new PlayerAttack(playerCamera, shootRange, enemyLayer);
-        playerMovement = new PlayerMovement(playerTransform, rb, playerCamera.transform, 500f);
-        playerRun = new PlayerMovement(playerTransform, rb, playerCamera.transform, 1000f);
+        playerAttack = new PlayerAttack(playerCamera, shootRange, enemyLayer, shootSound);
+        playerMovement = new PlayerMovement(playerTransform, rb, playerCamera.transform, 10);
+        playerRun = new PlayerMovement(playerTransform, rb, playerCamera.transform, 50);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -38,12 +41,17 @@ public class PlayerBrain : IUpdatable, IHealth
 
     private void PlayerLoses(PlayerDead playerDead)
     {
-        CustomUpdateManager.Instance.Unregister(this);
+        CustomUpdateManager.Instance.Unregister((IUpdatable)this);
+        CustomUpdateManager.Instance.Unregister((IFixedUpdatable)this);
     }
 
     public void Tick(float deltaTime)
     {
         playerMovement.MoveCamera(MoveCameraDirection());
+    }
+
+    public void FixedTick(float deltaTime)
+    {
         playerMovement.Move(MoveInputDirection());
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -81,6 +89,4 @@ public class PlayerBrain : IUpdatable, IHealth
     {
         hp -= damage;
     }
-
-
 }

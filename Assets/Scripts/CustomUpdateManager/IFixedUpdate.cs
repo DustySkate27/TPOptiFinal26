@@ -1,4 +1,4 @@
 public interface IFixedUpdatable
 {
-    void Tick(float deltaTime); 
+    void FixedTick(float deltaTime); 
 }

@@ -13,11 +13,14 @@ public class PlayerAttack : IUpdatable
     private ParticleManager particleManager;
     private LineRenderer line;
 
-    public PlayerAttack(Camera playerCamera, float shootDistance, LayerMask detectionLayer)
+    private AudioClip shootSound;
+
+    public PlayerAttack(Camera playerCamera, float shootDistance, LayerMask detectionLayer, AudioClip shootSound)
     {
         this.playerCamera = playerCamera;
         distance = shootDistance;
         enemyLayer = detectionLayer;
+        this.shootSound = shootSound;
 
         particleManager = ServiceLocator.Get<ParticleManager>();
         line = ServiceLocator.Get<LineRenderer>();
@@ -47,6 +50,8 @@ public class PlayerAttack : IUpdatable
 
     public void Shoot()
     {
+        EventBus.Publish(new OnPlaySound(shootSound, playerCamera.transform));
+
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
         line.gameObject.SetActive(true);

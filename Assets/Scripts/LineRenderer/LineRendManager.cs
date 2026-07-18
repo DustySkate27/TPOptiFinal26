@@ -13,7 +13,7 @@ public class LineRendManager : IFixedUpdatable
         CustomUpdateManager.Instance.Register(this);
     }
 
-    public void Tick(float deltaTime)
+    public void FixedTick(float deltaTime)
     {
         line.SetPosition(0, startPoint.position);
         line.SetPosition(1, startPoint.position + startPoint.forward * distance);

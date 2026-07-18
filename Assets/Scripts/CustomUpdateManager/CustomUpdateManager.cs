@@ -44,11 +44,11 @@ public class CustomUpdateManager : MonoBehaviour
         pendingUpdate.Clear();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         for (currentIndexFixUpdate = 0; currentIndexFixUpdate <= fixedUpdatables.Count - 1; currentIndexFixUpdate++)
         {
-            fixedUpdatables[currentIndexFixUpdate].Tick(Time.deltaTime);
+            fixedUpdatables[currentIndexFixUpdate].FixedTick(Time.deltaTime);
         }
 
         fixedUpdatables.AddRange(pendingFixUpdate);
@@ -101,5 +101,4 @@ public class CustomUpdateManager : MonoBehaviour
         latedUpdatables.Remove(updatable);
         currentIndexLateUpdate--;
     }
-
 }

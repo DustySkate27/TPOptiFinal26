@@ -18,3 +18,4 @@ MonoBehaviour:
   maxForce: 3
   rotationSpeed: 5
   predictionFactor: 0.04
+  destroySound: {fileID: 8300000, guid: efbe59819e502e14096a4eb1233c214c, type: 3}

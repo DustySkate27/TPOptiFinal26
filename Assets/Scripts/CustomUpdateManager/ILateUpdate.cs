@@ -1,4 +1,4 @@
 public interface ILateUpdatable
 {
-    void Tick(float deltaTime); 
+    void LateTick(float deltaTime); 
 }

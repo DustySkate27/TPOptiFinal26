@@ -14,7 +14,7 @@ public class ParticleBehaviour : IFixedUpdatable
         thisInstance = particle;
     }
 
-    public void Tick(float deltaTime)
+    public void FixedTick(float deltaTime)
     {
         currentTime += deltaTime;
         if (currentTime > aliveLimit) 

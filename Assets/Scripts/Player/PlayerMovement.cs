@@ -17,7 +17,7 @@ public class PlayerMovement
     
     public void Move(Vector3 dir)
     {
-        rb.linearVelocity = (dir * velocity * Time.deltaTime);
+        rb.linearVelocity = (dir * velocity);
         cameraTransform.position = playerTransform.position;
     }
 
