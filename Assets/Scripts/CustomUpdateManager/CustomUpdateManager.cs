@@ -101,4 +101,14 @@ public class CustomUpdateManager : MonoBehaviour
         latedUpdatables.Remove(updatable);
         currentIndexLateUpdate--;
     }
+
+    public void CheckSuscriptions()
+    {
+        Debug.Log("Update: " + updatables.Count + "; FixedUpdate: " + fixedUpdatables.Count + "; LateUpdate: " + latedUpdatables.Count);
+
+        foreach(IUpdatable entitys in updatables)
+        {
+            Debug.Log(entitys.ToString());
+        }
+    }
 }

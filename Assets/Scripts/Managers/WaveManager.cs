@@ -38,6 +38,8 @@ public class WaveManager : IUpdatable
         EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
 
         WaveSet();
+
+        EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);
     }
 
     public void Tick(float deltaTime)
@@ -99,12 +101,14 @@ public class WaveManager : IUpdatable
             EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
     }
 
-    public void UnregisterAllCurrentEnemies(EnemyDicUnregister unresEvent)
+    public void UnregisterAllCurrentEnemies(UnregisterEntitys unresEvent)
     {
         if(waveReferences.Count == 0) return;
         foreach(Enemy enemy in waveReferences.Values)
         {
             CustomUpdateManager.Instance.Unregister(enemy);
         }
+
+        CustomUpdateManager.Instance.Unregister(this);
     }
 }

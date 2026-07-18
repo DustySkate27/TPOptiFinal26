@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack : IUpdatable
+public class PlayerAttack
 {
     private Camera playerCamera;
     private float distance;
@@ -24,8 +24,6 @@ public class PlayerAttack : IUpdatable
 
         particleManager = ServiceLocator.Get<ParticleManager>();
         line = ServiceLocator.Get<LineRendManager>();
-
-        CustomUpdateManager.Instance.Register(this);
     }
     public void Tick(float deltaTime)
     {

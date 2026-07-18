@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public static class EventBus
 {
@@ -37,5 +38,12 @@ public static class EventBus
                 ((Action<T>)d)(ev);
             }
         }
+    }
+
+    public static int Clear()
+    {
+        subs.Clear();
+
+        return subs.Count;
     }
 }

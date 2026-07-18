@@ -14,10 +14,6 @@ public class UnsuscribeClasses : IGameEvent
     public UnsuscribeClasses() { }
 }
 
-public class PlayerDead : IGameEvent
-{
-    public PlayerDead() { }
-}
 public class DisableEntityEvent : IGameEvent
 {
     public UnityEngine.Object objectInstance;
@@ -78,7 +74,7 @@ public class UpdateTextEvent : IGameEvent
     }
 }
 
-public class EnemyDicUnregister : IGameEvent
+public class UnregisterEntitys : IGameEvent
 {
-    public EnemyDicUnregister() { }
+    public UnregisterEntitys() { }
 }

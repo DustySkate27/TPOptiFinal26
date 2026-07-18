@@ -60,10 +60,19 @@ public class GameManager : MonoBehaviour
         EventBus.Subscribe<DisableEntityEvent>(waveManager.OnEnemyDeadCond);
         EventBus.Subscribe<OnParticleEndEvent>(particleManager.OnParticleEnd);
     }
-    private void EventUnsubscriptions()
+    private void UnregisterServicies()
     {
+        ServiceLocator.Unregister<Dictionary<UnityEngine.Object, Enemy>>();
+        ServiceLocator.Unregister<GameManager>();
+        ServiceLocator.Unregister<ParticleManager>();
+        ServiceLocator.Unregister<LineRendManager>();
+
+        Debug.Log("Services register: " + ServiceLocator.ServicesRegister());
+
+        /*
         EventBus.Unsubscribe<WinGameEvent>(OnWinCond);
         EventBus.Unsubscribe<LoseGameEvent>(OnLoseCond);
+        */
     }
 
     /*
@@ -76,16 +85,42 @@ public class GameManager : MonoBehaviour
     public void OnWinCond(WinGameEvent winEvent)
     {
         Time.timeScale = 0f;
+
+        EventBus.Publish(new UnregisterEntitys());
+
+        CustomUpdateManager.Instance.CheckSuscriptions();
+
+        int eventSuscribe = EventBus.Clear();
+
+        Debug.Log("Events registers: " + eventSuscribe);
+
+        UnregisterServicies();
+
         Debug.Log("You Win!!");
-        EventUnsubscriptions();
+
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1f;
     }
 
     public void OnLoseCond(LoseGameEvent loseEvent)
     {
         Time.timeScale = 0f;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        EventBus.Publish(new UnregisterEntitys());
+
+        CustomUpdateManager.Instance.CheckSuscriptions();
+
+        int eventSuscribe = EventBus.Clear();
+
+        Debug.Log("Events registers: " + eventSuscribe);
+
+        UnregisterServicies();
+
         Debug.Log("You Lose");
-        EventUnsubscriptions();
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
     }
 
     public void ResetScene()

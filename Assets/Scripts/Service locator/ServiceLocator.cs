@@ -53,4 +53,14 @@ public static class ServiceLocator
             services.Remove(type);
         }
     }
+
+    public static void Clear()
+    {
+        services.Clear();
+    }
+
+    public static int ServicesRegister()
+    {
+        return services.Count;
+    }
 }

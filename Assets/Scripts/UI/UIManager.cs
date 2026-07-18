@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour, IUpdatable
         CustomUpdateManager.Instance.Register(this);
         EventBus.Subscribe<OnWaveInit>(OnWaveInit);
         EventBus.Subscribe<UpdateTextEvent>(UpdateText);
+
+        EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
     }
 
     public void Tick(float deltaTime)
@@ -60,5 +62,10 @@ public class UIManager : MonoBehaviour, IUpdatable
         {
             act = false;
         }
+    }
+
+    private void UnregisterEntity(UnregisterEntitys unregisterEvent)
+    {
+        CustomUpdateManager.Instance.Unregister(this);
     }
 }

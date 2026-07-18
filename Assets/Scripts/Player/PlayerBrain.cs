@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerBrain : IUpdatable,IFixedUpdatable , IHealth
+public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
 {
     private Transform playerTransform;
     private Rigidbody rb;
@@ -38,17 +38,14 @@ public class PlayerBrain : IUpdatable,IFixedUpdatable , IHealth
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
 
-    private void PlayerLoses(PlayerDead playerDead)
-    {
-        CustomUpdateManager.Instance.Unregister((IUpdatable)this);
-        CustomUpdateManager.Instance.Unregister((IFixedUpdatable)this);
+        EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
     }
 
     public void Tick(float deltaTime)
     {
         playerMovement.MoveCamera(MoveCameraDirection());
+        playerAttack.Tick(deltaTime);
     }
 
     public void FixedTick(float deltaTime)
@@ -91,4 +88,9 @@ public class PlayerBrain : IUpdatable,IFixedUpdatable , IHealth
         hp -= damage;
     }
 
+    private void UnregisterEntity(UnregisterEntitys unregisterEvent)
+    {
+        CustomUpdateManager.Instance.Unregister((IUpdatable)this);
+        CustomUpdateManager.Instance.Unregister((IFixedUpdatable)this);
+    }
 }
