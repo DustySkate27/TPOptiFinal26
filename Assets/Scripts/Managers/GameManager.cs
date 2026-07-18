@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Register(waveManager.waveSize);
         ServiceLocator.Register(gameManage);
         ServiceLocator.Register(particleManager);
-        ServiceLocator.Register(lineManager.line);
+        ServiceLocator.Register(lineManager);
     }
 
     private void EventSubscriptions()

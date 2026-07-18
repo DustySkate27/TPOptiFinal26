@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerAttack : IUpdatable
 {
-    private  Camera playerCamera;
+    private Camera playerCamera;
     private float distance;
     private LayerMask enemyLayer;
     private float rateOfFire = 0.5f;
 
     private float currentTime = 0f;
     private ParticleManager particleManager;
-    private LineRenderer line;
+    private LineRendManager line;
 
     private AudioClip shootSound;
 
@@ -23,7 +23,7 @@ public class PlayerAttack : IUpdatable
         this.shootSound = shootSound;
 
         particleManager = ServiceLocator.Get<ParticleManager>();
-        line = ServiceLocator.Get<LineRenderer>();
+        line = ServiceLocator.Get<LineRendManager>();
 
         CustomUpdateManager.Instance.Register(this);
     }
@@ -37,10 +37,7 @@ public class PlayerAttack : IUpdatable
                 currentTime = 0f;
             }
         }
-        else
-        {
-            line.gameObject.SetActive(false);
-        }
+        
 
         if (currentTime < rateOfFire + 0.5f)
         {
@@ -54,7 +51,7 @@ public class PlayerAttack : IUpdatable
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
-        line.gameObject.SetActive(true);
+        line.Shot();
 
         if (Physics.Raycast(ray, out RaycastHit collision, distance))
         {
