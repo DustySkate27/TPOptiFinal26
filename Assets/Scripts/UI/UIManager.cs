@@ -28,14 +28,12 @@ public class UIManager : MonoBehaviour, IUpdatable
     {
         if (act)
         {
-            Debug.Log("entre");
             movingTime += deltaTime;
             WaveTransition(currentWave, currentSize);
         }
         else
         {
             movingTime = 0;
-            Debug.Log("sali");
         }
     }
 

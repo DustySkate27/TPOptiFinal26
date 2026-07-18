@@ -77,3 +77,8 @@ public class UpdateTextEvent : IGameEvent
         this.text = text;
     }
 }
+
+public class EnemyDicUnregister : IGameEvent
+{
+    public EnemyDicUnregister() { }
+}

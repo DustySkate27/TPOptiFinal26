@@ -3431,7 +3431,7 @@ MonoBehaviour:
   - {fileID: 1718009802}
   currentWaveMovableObjects: []
   enemiesLeft: {fileID: 1867484987}
-  limitTime: 3
+  limitTime: 4
   speed: -500
 --- !u!4 &1443985154
 Transform:
@@ -4923,8 +4923,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1443985154}
   - {fileID: 156263510}
+  - {fileID: 1443985154}
   - {fileID: 1069805882}
   - {fileID: 109218316}
   - {fileID: 2077405455}

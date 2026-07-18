@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour
 
         lineManager = new LineRendManager(lineRenderer, startOfLine);
 
-        waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
-
         particleManager = new ParticleManager(particlePrefab);
 
         audioManager = new AudioManager(audioSource, audioSource.transform);
+
+        waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
 
         ServicesRegistrations();
 

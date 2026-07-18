@@ -28,13 +28,15 @@ public class WaveManager : IUpdatable
         waveSize = new Dictionary<int, int>();
         CustomUpdateManager.Instance.Register(this);
 
+        waveSize.Add(0, 1);
+        waveSize.Add(1, 1);
+        waveSize.Add(2, 1);
 
-        waveSize.Add(0, 10);
-        waveSize.Add(1, 30);
-        waveSize.Add(2, 50);
+        WarmUpEnemies(enemySO, 3);
 
-        WarmUpEnemies(enemySO, 50);
+        Debug.Log("Entra Wave");
         EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
+
         WaveSet();
     }
 
@@ -78,7 +80,7 @@ public class WaveManager : IUpdatable
 
     private void WarmUpEnemies(EnemySO enemySO, int count)
     {
-        ObjectPoolManager.WarmUp(enemySO.prefab, 50);
+        ObjectPoolManager.WarmUp(enemySO.prefab, count);
     }
 
     public void OnEnemyDeadCond(DisableEntityEvent dead)
@@ -92,7 +94,17 @@ public class WaveManager : IUpdatable
         currentAmount--;
 
         EventBus.Publish(new UpdateTextEvent(currentAmount.ToString()));
-        if(currentAmount == 0) EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
 
+        if(currentAmount == 0 && currentWave < waveSize.Count) 
+            EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
+    }
+
+    public void UnregisterAllCurrentEnemies(EnemyDicUnregister unresEvent)
+    {
+        if(waveReferences.Count == 0) return;
+        foreach(Enemy enemy in waveReferences.Values)
+        {
+            CustomUpdateManager.Instance.Unregister(enemy);
+        }
     }
 }

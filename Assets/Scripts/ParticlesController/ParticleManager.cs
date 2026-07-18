@@ -37,5 +37,15 @@ public class ParticleManager
 
         particleReferences.Remove(end.objectInstance);
     }
+
+    public void UnregisterAllCurrentEnemies(EnemyDicUnregister unresEvent)
+    {
+        if (particleReferences.Count == 0) return;
+
+        foreach (ParticleBehaviour enemy in particleReferences.Values)
+        {
+            CustomUpdateManager.Instance.Unregister(enemy);
+        }
+    }
 }
 
