@@ -8,7 +8,7 @@ public class PooledObjectInfo
     public List<GameObject> inactiveObjects = new();
 }
 
-public class ObjectPoolManager
+public static class ObjectPoolManager
 {
     private static Dictionary<UnityEngine.Object, PooledObjectInfo> ObjectPools = new();
 
@@ -78,5 +78,17 @@ public class ObjectPoolManager
 
         go.SetActive(false);
         pool.inactiveObjects.Add(go);
+    }
+
+    public static void DebugPools()
+    {
+        Debug.Log(ObjectPools.Count);
+        Debug.Log(instanceToPool.Count);
+    }
+
+    public static void ClearPools()
+    {
+        instanceToPool.Clear();
+        ObjectPools.Clear();
     }
 }

@@ -34,8 +34,6 @@ public class WaveManager : IUpdatable
 
         WarmUpEnemies(enemySO, 3);
 
-        Debug.Log("Entra Wave");
-
         Init();
 
         EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);

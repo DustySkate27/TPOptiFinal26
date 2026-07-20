@@ -35,8 +35,9 @@ public class CustomUpdateManager : MonoBehaviour
 
     void Update()
     {
-        for (currentIndexUpdate = 0; currentIndexUpdate <= updatables.Count -1 ; currentIndexUpdate++)
+        for (currentIndexUpdate = 0; currentIndexUpdate < updatables.Count ; currentIndexUpdate++)
         {
+            if(updatables.Count > 0)
             updatables[currentIndexUpdate].Tick(Time.deltaTime); 
         }
 
@@ -46,7 +47,7 @@ public class CustomUpdateManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        for (currentIndexFixUpdate = 0; currentIndexFixUpdate <= fixedUpdatables.Count - 1; currentIndexFixUpdate++)
+        for (currentIndexFixUpdate = 0; currentIndexFixUpdate < fixedUpdatables.Count; currentIndexFixUpdate++)
         {
             fixedUpdatables[currentIndexFixUpdate].FixedTick(Time.deltaTime);
         }
@@ -57,7 +58,7 @@ public class CustomUpdateManager : MonoBehaviour
 
     //private void LateUpdate()
     //{
-    //    for (currentIndexLateUpdate = 0; currentIndexLateUpdate <= latedUpdatables.Count - 1; currentIndexLateUpdate++)
+    //    for (currentIndexLateUpdate = 0; currentIndexLateUpdate < latedUpdatables.Count; currentIndexLateUpdate++)
     //    {
     //        latedUpdatables[currentIndexLateUpdate].Tick(Time.deltaTime);
     //    }

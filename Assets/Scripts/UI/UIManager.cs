@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-2)]
 public class UIManager : MonoBehaviour, IUpdatable
@@ -20,11 +21,13 @@ public class UIManager : MonoBehaviour, IUpdatable
 
     private void Awake()
     {
-        CustomUpdateManager.Instance.Register(this);
-        EventBus.Subscribe<OnWaveInit>(OnWaveInit);
-        EventBus.Subscribe<UpdateTextEvent>(UpdateText);
-
-        EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
+        if(SceneManager.GetActiveScene().name == "Game")
+        {
+            CustomUpdateManager.Instance.Register(this);
+            EventBus.Subscribe<OnWaveInit>(OnWaveInit);
+            EventBus.Subscribe<UpdateTextEvent>(UpdateText);
+            EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
+        }
     }
 
     public void Tick(float deltaTime)
@@ -68,5 +71,15 @@ public class UIManager : MonoBehaviour, IUpdatable
     private void UnregisterEntity(UnregisterEntitys unregisterEvent)
     {
         CustomUpdateManager.Instance.Unregister(this);
+    }
+
+    public void OnPlayClick()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void OnQuitClick()
+    {
+        Application.Quit();
     }
 }

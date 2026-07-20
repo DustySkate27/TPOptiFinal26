@@ -66,17 +66,10 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Unregister<GameManager>();
         ServiceLocator.Unregister<ParticleManager>();
         ServiceLocator.Unregister<LineRendManager>();
-
-        Debug.Log("Services register: " + ServiceLocator.ServicesRegister());
-
-        /*
-        EventBus.Unsubscribe<WinGameEvent>(OnWinCond);
-        EventBus.Unsubscribe<LoseGameEvent>(OnLoseCond);
-        */
     }
 
     /*
-    public AudioSource CreateAudioSource()
+    public AudioSource CreateAudioSource() //For AudioPool (if done)
     {
         AudioSource audioSource;
         return audioSource = Instantiate(AudioSource);
@@ -88,17 +81,23 @@ public class GameManager : MonoBehaviour
 
         EventBus.Publish(new UnregisterEntitys());
 
-        CustomUpdateManager.Instance.CheckSuscriptions();
-
         int eventSuscribe = EventBus.Clear();
 
-        Debug.Log("Events registers: " + eventSuscribe);
+        UnregisterServicies(); 
 
-        UnregisterServicies();
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
 
-        Debug.Log("You Win!!");
+        Debug.Log("PREVIOUS");
+        ObjectPoolManager.DebugPools();
+
+        ObjectPoolManager.ClearPools();
+
+        Debug.Log("POST MORTEM");
+        ObjectPoolManager.DebugPools();
 
         SceneManager.LoadScene(1);
+        
         Time.timeScale = 1f;
     }
 
@@ -106,29 +105,22 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        EventBus.Publish(new UnregisterEntitys());
-
-        CustomUpdateManager.Instance.CheckSuscriptions();
+        EventBus.Publish(new UnregisterEntitys());;
 
         int eventSuscribe = EventBus.Clear();
 
-        Debug.Log("Events registers: " + eventSuscribe);
-
         UnregisterServicies();
 
-        Debug.Log("You Lose");
+        Debug.Log("PREVIOUS");
+        ObjectPoolManager.DebugPools();
 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ObjectPoolManager.ClearPools();
+
+        Debug.Log("POST MORTEM");
+        ObjectPoolManager.DebugPools();
         SceneManager.LoadScene(0);
+
         Time.timeScale = 1f;
-    }
-
-    public void ResetScene()
-    {
-        Time.timeScale = 1.0f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().ToString());
-
-        EventSubscriptions();
     }
 
     public static Rigidbody CreatePlayer(PlayerSO playerSO)
