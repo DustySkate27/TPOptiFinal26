@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using System.Net;
 
 public class WaveManager : IUpdatable
 {
+    private ObjectPoolManager poolManager;
     private EnemySO enemySO;
     private Transform target;
     private Rigidbody targetRB;
@@ -12,13 +15,15 @@ public class WaveManager : IUpdatable
 
     private Dictionary<int, int> waveSize;
     private int currentAmount = 0;
+    private int enemiesKilled = 0;
     private int currentWave = 0;
     private int countCheck = 0;
     private float timePassed = 0f;
     private float spawnInterval = 0.3f;
 
-    public WaveManager(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
+    public WaveManager(ObjectPoolManager objPoolMan, EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
+        poolManager = objPoolMan;
         this.enemySO = enemySO;
         this.target = target;
         this.targetRB = targetRB;
@@ -34,7 +39,9 @@ public class WaveManager : IUpdatable
 
         WarmUpEnemies(enemySO, 3);
 
-        Init();
+        WaveSet();
+        EventBus.Publish(new UpdateTextEvent(enemiesKilled.ToString(), waveSize[currentWave].ToString()));
+        EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
 
         EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);
     }
@@ -60,47 +67,51 @@ public class WaveManager : IUpdatable
                 }
                 else
                 {
-                    currentWave++;
                     countCheck = 0;
                     timePassed = 0;
                 }
             }
         }
-        else
-            EventBus.Publish(new WinGameEvent());
-    }
-    public void Init()
-    {
-        WaveSet();
-        EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
     }
 
     private void SpawnEnemy(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)
     {
-        UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
+        UnityEngine.Object catchedRef = poolManager.SpawnObject(enemySO.prefab, spawnList[UnityEngine.Random.Range(0, spawnList.Count)]);
         waveReferences.Add(catchedRef, new Enemy(catchedRef, target, targetRB, enemySO));
         currentAmount++;
     }
 
     private void WarmUpEnemies(EnemySO enemySO, int count)
     {
-        ObjectPoolManager.WarmUp(enemySO.prefab, count);
+        poolManager.WarmUp(enemySO.prefab, count);
     }
 
     public void OnEnemyDeadCond(DisableEntityEvent dead)
     {
-        ObjectPoolManager.ReturnObjectToPool(dead.objectInstance);
+        poolManager.ReturnObjectToPool(dead.objectInstance);
 
         CustomUpdateManager.Instance.Unregister(waveReferences[dead.objectInstance]);
 
         waveReferences.Remove(dead.objectInstance);
 
         currentAmount--;
+        enemiesKilled++;
 
-        EventBus.Publish(new UpdateTextEvent(currentAmount.ToString()));
-
-        if(currentAmount == 0 && currentWave < waveSize.Count) 
-            EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
+        if(currentAmount == 0)
+        {
+            currentWave++;
+            if(currentWave < waveSize.Count)
+            {
+                enemiesKilled = 0;
+                EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
+            }
+            else
+            {
+                EventBus.Publish(new WinGameEvent());
+                return;
+            }
+        }
+        EventBus.Publish(new UpdateTextEvent(enemiesKilled.ToString(), waveSize[currentWave].ToString()));
     }
 
     public void UnregisterAllCurrentEnemies(UnregisterEntitys unresEvent)

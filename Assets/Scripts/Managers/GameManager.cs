@@ -22,30 +22,37 @@ public class GameManager : MonoBehaviour
     private ParticleManager particleManager;
     private LineRendManager lineManager;
     private AudioManager audioManager;
+    private ObjectPoolManager objectPoolManager;
+    private UIManager uiManager;
 
 
     private void Awake()
     {
         gameManage = this;
+        
+        uiManager = ServiceLocator.Get<UIManager>();
+        uiManager.GetGameManager(this);
+
+        objectPoolManager = new ObjectPoolManager();
 
         Rigidbody playerInstanceRef = CreatePlayer(playerSO);
 
         lineManager = new LineRendManager(lineRenderer, startOfLine);
 
-        particleManager = new ParticleManager(particlePrefab);
+        particleManager = new ParticleManager(particlePrefab, objectPoolManager);
 
         audioManager = new AudioManager(audioSource, audioSource.transform);
 
-        waveManager = new WaveManager(enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
+        waveManager = new WaveManager(objectPoolManager, enemySO, playerInstanceRef.transform, playerInstanceRef, spawnList);
 
         ServicesRegistrations();
 
-        playerBrain = new PlayerBrain(playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO);
+        playerBrain = new PlayerBrain(this, playerInstanceRef.transform, playerInstanceRef, playerCamera, playerSO);
 
         EventSubscriptions();
     }
 
-    private void ServicesRegistrations() 
+    private void ServicesRegistrations() //Additional registration: UIManager (on its awake)
     {
         ServiceLocator.Register(waveManager.waveReferences);
         ServiceLocator.Register(gameManage);
@@ -75,6 +82,16 @@ public class GameManager : MonoBehaviour
         return audioSource = Instantiate(AudioSource);
     }
     */
+
+    public void OnPauseGame()
+    {
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        uiManager.MovePanel(0);
+        uiManager.PauseButtons();
+    }
+
     public void OnWinCond(WinGameEvent winEvent)
     {
         Time.timeScale = 0f;
@@ -88,15 +105,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        Debug.Log("PREVIOUS");
-        ObjectPoolManager.DebugPools();
+        objectPoolManager.ClearPools();
 
-        ObjectPoolManager.ClearPools();
-
-        Debug.Log("POST MORTEM");
-        ObjectPoolManager.DebugPools();
-
-        SceneManager.LoadScene(1);
+        uiManager.MovePanel(1);
+        uiManager.EndingButtons();
         
         Time.timeScale = 1f;
     }
@@ -111,14 +123,10 @@ public class GameManager : MonoBehaviour
 
         UnregisterServicies();
 
-        Debug.Log("PREVIOUS");
-        ObjectPoolManager.DebugPools();
+        objectPoolManager.ClearPools();
 
-        ObjectPoolManager.ClearPools();
-
-        Debug.Log("POST MORTEM");
-        ObjectPoolManager.DebugPools();
-        SceneManager.LoadScene(0);
+        uiManager.MovePanel(2);
+        uiManager.EndingButtons();
 
         Time.timeScale = 1f;
     }
@@ -137,4 +145,23 @@ public class GameManager : MonoBehaviour
         return Instantiate(entity, spawnPosition, spawnRotation);
     }
 
+    #region BUTTON ACTIONS
+    public void OnReturnToMenu()
+    {
+        EventBus.Publish(new WinGameEvent());
+    }
+
+    public void OnResetGame()
+    {
+        EventBus.Publish(new LoseGameEvent());
+    }
+
+    public void OnResumeGame()
+    {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        uiManager.ResumeGame();
+    }
+    #endregion
 }

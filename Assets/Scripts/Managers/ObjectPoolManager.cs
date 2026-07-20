@@ -8,13 +8,15 @@ public class PooledObjectInfo
     public List<GameObject> inactiveObjects = new();
 }
 
-public static class ObjectPoolManager
+public class ObjectPoolManager
 {
-    private static Dictionary<UnityEngine.Object, PooledObjectInfo> ObjectPools = new();
+    private Dictionary<UnityEngine.Object, PooledObjectInfo> ObjectPools = new();
 
-    private static Dictionary<GameObject, PooledObjectInfo> instanceToPool = new();
+    private Dictionary<GameObject, PooledObjectInfo> instanceToPool = new();
 
-    private static PooledObjectInfo GetOrCreatePool(UnityEngine.Object prefab)
+    public ObjectPoolManager() { }
+
+    private PooledObjectInfo GetOrCreatePool(UnityEngine.Object prefab)
     {
         if (!ObjectPools.TryGetValue(prefab, out PooledObjectInfo pool))
         {
@@ -25,7 +27,7 @@ public static class ObjectPoolManager
         return pool;
     }
 
-    public static void WarmUp(UnityEngine.Object prefab, int count)
+    public void WarmUp(UnityEngine.Object prefab, int count)
     {
         PooledObjectInfo pool = GetOrCreatePool(prefab);
 
@@ -38,7 +40,7 @@ public static class ObjectPoolManager
         }
     }
 
-    public static UnityEngine.Object SpawnObject(UnityEngine.Object objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
+    public UnityEngine.Object SpawnObject(UnityEngine.Object objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation)
     {
         PooledObjectInfo pool = GetOrCreatePool(objectToSpawn);
 
@@ -61,12 +63,12 @@ public static class ObjectPoolManager
         return spawneableObj;
     }
 
-    public static UnityEngine.Object SpawnObject(UnityEngine.Object objectToSpawn, Transform spawn)
+    public UnityEngine.Object SpawnObject(UnityEngine.Object objectToSpawn, Transform spawn)
     {
         return SpawnObject(objectToSpawn, spawn.position, spawn.rotation);
     }
 
-    public static void ReturnObjectToPool(UnityEngine.Object obj)
+    public void ReturnObjectToPool(UnityEngine.Object obj)
     {
         GameObject go = obj.GameObject();
 
@@ -80,13 +82,13 @@ public static class ObjectPoolManager
         pool.inactiveObjects.Add(go);
     }
 
-    public static void DebugPools()
+    public void DebugPools()
     {
         Debug.Log(ObjectPools.Count);
         Debug.Log(instanceToPool.Count);
     }
 
-    public static void ClearPools()
+    public void ClearPools()
     {
         instanceToPool.Clear();
         ObjectPools.Clear();

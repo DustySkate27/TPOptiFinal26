@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
+public class PlayerBrain : IUpdatable, IFixedUpdatable
 {
     private Transform playerTransform;
     private Rigidbody rb;
@@ -14,14 +14,14 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
     private float xRotation, yRotation;
     private float sensitivity = 200f;
 
+    private GameManager gameManager;
     private PlayerMovement playerMovement;
     private PlayerMovement playerRun;
     private PlayerAttack playerAttack;
 
-    private float hp;
-
-    public PlayerBrain(Transform _playerTransform, Rigidbody playerRB, Camera camera, PlayerSO playerSO)
+    public PlayerBrain(GameManager gameManager,Transform _playerTransform, Rigidbody playerRB, Camera camera, PlayerSO playerSO)
     {
+        this.gameManager = gameManager;
         playerTransform = _playerTransform;
         rb = playerRB;
         playerCamera = camera;
@@ -44,6 +44,10 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
 
     public void Tick(float deltaTime)
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.OnPauseGame();
+        }
         playerMovement.MoveCamera(MoveCameraDirection());
         playerAttack.Tick(deltaTime);
     }
@@ -82,11 +86,6 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
 
         return dir;
     } 
-
-    public void TakeDamage(float damage)
-    {
-        hp -= damage;
-    }
 
     private void UnregisterEntity(UnregisterEntitys unregisterEvent)
     {

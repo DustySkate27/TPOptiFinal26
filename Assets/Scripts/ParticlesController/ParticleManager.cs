@@ -9,8 +9,11 @@ public class ParticleManager
 
     private int defaultSize = 10;
 
-    public ParticleManager(GameObject prefab)
+    ObjectPoolManager poolManager;
+
+    public ParticleManager(GameObject prefab, ObjectPoolManager objPoolMan)
     {
+        poolManager = objPoolMan;
         particleReferences = new Dictionary<UnityEngine.Object, ParticleBehaviour>();
 
         particle = prefab;
@@ -22,18 +25,18 @@ public class ParticleManager
 
     private void WarmUpParticles()
     {
-        ObjectPoolManager.WarmUp(particle, defaultSize);
+        poolManager.WarmUp(particle, defaultSize);
     }
 
     public void SpawnParticle(Vector3 spawnPosition, Quaternion spawnRotation)
     {
-        UnityEngine.Object catchedRef = ObjectPoolManager.SpawnObject(particle, spawnPosition, spawnRotation);
+        UnityEngine.Object catchedRef = poolManager.SpawnObject(particle, spawnPosition, spawnRotation);
         particleReferences.Add(catchedRef, new ParticleBehaviour(catchedRef));
     }
 
     public void OnParticleEnd(OnParticleEndEvent end)
     {
-        ObjectPoolManager.ReturnObjectToPool(end.objectInstance);
+        poolManager.ReturnObjectToPool(end.objectInstance);
 
         CustomUpdateManager.Instance.Unregister(particleReferences[end.objectInstance]);
 

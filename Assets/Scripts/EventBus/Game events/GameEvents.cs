@@ -66,11 +66,14 @@ public class OnWaveInit : IGameEvent
 
 public class UpdateTextEvent : IGameEvent
 {
-    public string text;
+    public string kills;
+    public string total;
 
-    public UpdateTextEvent(string text)
+
+    public UpdateTextEvent(string kill, string size)
     {
-        this.text = text;
+        kills = kill;
+        total = size;
     }
 }
 
