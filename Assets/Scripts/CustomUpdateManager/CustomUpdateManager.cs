@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(-2)]
+[DefaultExecutionOrder(-3)]
 public class CustomUpdateManager : MonoBehaviour
 {
     public static CustomUpdateManager Instance;

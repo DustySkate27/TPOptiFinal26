@@ -12,7 +12,7 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable , IHealth
 
     private float horizontalInput, verticalInput;
     private float xRotation, yRotation;
-    private float sensitivity = 100f;
+    private float sensitivity = 200f;
 
     private PlayerMovement playerMovement;
     private PlayerMovement playerRun;

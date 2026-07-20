@@ -35,9 +35,8 @@ public class WaveManager : IUpdatable
         WarmUpEnemies(enemySO, 3);
 
         Debug.Log("Entra Wave");
-        EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
 
-        WaveSet();
+        Init();
 
         EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);
     }
@@ -71,6 +70,11 @@ public class WaveManager : IUpdatable
         }
         else
             EventBus.Publish(new WinGameEvent());
+    }
+    public void Init()
+    {
+        WaveSet();
+        EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
     }
 
     private void SpawnEnemy(EnemySO enemySO, Transform target, Rigidbody targetRB, List<Transform> spawnList)

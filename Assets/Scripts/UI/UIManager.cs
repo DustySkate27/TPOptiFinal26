@@ -4,15 +4,16 @@ using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 
+[DefaultExecutionOrder(-2)]
 public class UIManager : MonoBehaviour, IUpdatable
 {
     public List<GameObject> waveMovableObjects;
     public List<GameObject> currentWaveMovableObjects;
     public TextMeshProUGUI enemiesLeft;
 
-    private float movingTime;
-    public float limitTime;
-    public float speed;
+    private float movingTime = 0;
+    private float limitTime = 3;
+    private float speed = -500;
     private bool act = false;
     private int currentWave;
     private int currentSize;
