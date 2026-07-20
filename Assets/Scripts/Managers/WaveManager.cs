@@ -103,12 +103,12 @@ public class WaveManager : IUpdatable
 
     public void UnregisterAllCurrentEnemies(UnregisterEntitys unresEvent)
     {
+        CustomUpdateManager.Instance.Unregister(this);
+
         if(waveReferences.Count == 0) return;
         foreach(Enemy enemy in waveReferences.Values)
         {
             CustomUpdateManager.Instance.Unregister(enemy);
         }
-
-        CustomUpdateManager.Instance.Unregister(this);
     }
 }
