@@ -9,10 +9,7 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable
     private float shootRange;
     private LayerMask enemyLayer;
     private AudioClip shootSound;
-
-    private float horizontalInput, verticalInput;
-    private float xRotation, yRotation;
-    private float sensitivity = 200f;
+    
 
     private GameManager gameManager;
     private PlayerMovement playerMovement;
@@ -39,7 +36,7 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
+        EventBus.Subscribe<UnregisterEntities>(UnregisterEntity);
     }
 
     public void Tick(float deltaTime)
@@ -48,46 +45,21 @@ public class PlayerBrain : IUpdatable, IFixedUpdatable
         {
             gameManager.OnPauseGame();
         }
-        playerMovement.MoveCamera(MoveCameraDirection());
+        playerMovement.MoveCamera();
         playerAttack.Tick(deltaTime);
     }
 
     public void FixedTick(float deltaTime)
     {
-        playerMovement.Move(MoveInputDirection());
+        playerMovement.Move();
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            playerRun.Move(MoveInputDirection());
+            playerRun.Move();
         }
     }
 
-    private Vector3 MoveInputDirection()
-    {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
-        Vector3 dir = playerTransform.forward * verticalInput + playerTransform.right * horizontalInput;
-
-        return dir;
-    }
-
-    private Vector3 MoveCameraDirection()
-    {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity;
-
-        yRotation += mouseX;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        Vector2 dir = new Vector2(xRotation, yRotation);
-
-        return dir;
-    } 
-
-    private void UnregisterEntity(UnregisterEntitys unregisterEvent)
+    private void UnregisterEntity(UnregisterEntities unregisterEvent)
     {
         CustomUpdateManager.Instance.Unregister((IUpdatable)this);
         CustomUpdateManager.Instance.Unregister((IFixedUpdatable)this);

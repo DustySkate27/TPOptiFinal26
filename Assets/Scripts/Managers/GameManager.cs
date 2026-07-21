@@ -62,8 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void EventSubscriptions() //Additional subscriptions: UIManager (on its Awake)
     {
-        EventBus.Subscribe<WinGameEvent>(OnWinCond);
-        EventBus.Subscribe<LoseGameEvent>(OnLoseCond);
+        EventBus.Subscribe<EndGameEvent>(OnEndCond);
         EventBus.Subscribe<DisableEntityEvent>(waveManager.OnEnemyDeadCond);
         EventBus.Subscribe<OnParticleEndEvent>(particleManager.OnParticleEnd);
     }
@@ -88,45 +87,45 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+
         uiManager.MovePanel(0);
         uiManager.PauseButtons();
     }
 
-    public void OnWinCond(WinGameEvent winEvent)
+    public void OnEndCond(EndGameEvent end)
     {
         Time.timeScale = 0f;
-
-        EventBus.Publish(new UnregisterEntitys());
-
-        int eventSuscribe = EventBus.Clear();
-
-        UnregisterServicies(); 
-
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        objectPoolManager.ClearPools();
+        EventBus.Publish(new UnregisterEntities());
 
-        uiManager.MovePanel(1);
+        uiManager.MovePanel(end.state);
         uiManager.EndingButtons();
-        
-        Time.timeScale = 1f;
     }
 
-    public void OnLoseCond(LoseGameEvent loseEvent)
+    public void RestartRun()
     {
-        Time.timeScale = 0f;
-
-        EventBus.Publish(new UnregisterEntitys());;
-
         int eventSuscribe = EventBus.Clear();
 
         UnregisterServicies();
 
         objectPoolManager.ClearPools();
 
-        uiManager.MovePanel(2);
-        uiManager.EndingButtons();
+        SceneManager.LoadScene("Game");
+
+        Time.timeScale = 1f;
+    }
+
+    public void ReturnToMenu()
+    {
+        int eventSuscribe = EventBus.Clear();
+
+        UnregisterServicies();
+
+        objectPoolManager.ClearPools();
+
+        SceneManager.LoadScene("Menu");
 
         Time.timeScale = 1f;
     }
@@ -148,12 +147,12 @@ public class GameManager : MonoBehaviour
     #region BUTTON ACTIONS
     public void OnReturnToMenu()
     {
-        EventBus.Publish(new WinGameEvent());
+        ReturnToMenu();
     }
 
     public void OnResetGame()
     {
-        EventBus.Publish(new LoseGameEvent());
+        RestartRun();
     }
 
     public void OnResumeGame()
@@ -161,7 +160,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        uiManager.ResumeGame();
     }
     #endregion
 }

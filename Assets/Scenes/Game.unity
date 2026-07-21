@@ -717,7 +717,7 @@ MonoBehaviour:
     m_NormalColor: {r: 0.9098039, g: 0.972549, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.9476305, b: 0, a: 1}
     m_PressedColor: {r: 1, g: 0.7858338, b: 0, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.909804, g: 0.9725491, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -737,9 +737,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 5ddaeaf8d6a52f5478d203235cbb49c0, type: 3}
+      - m_Target: {fileID: 1443985153}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: ResumeGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4962,7 +4962,7 @@ MonoBehaviour:
   - {fileID: 632829457}
   - {fileID: 1718009802}
   gamePanels:
-  - {fileID: 27429594}
+  - {fileID: 27429593}
   - {fileID: 747568807}
   - {fileID: 1204878679}
   enemiesLeft: {fileID: 1867484987}
@@ -5407,7 +5407,7 @@ MonoBehaviour:
     m_NormalColor: {r: 0.9098039, g: 0.972549, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.9476305, b: 0, a: 1}
     m_PressedColor: {r: 1, g: 0.7858338, b: 0, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.909804, g: 0.9725491, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -5427,9 +5427,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 5ddaeaf8d6a52f5478d203235cbb49c0, type: 3}
+      - m_Target: {fileID: 1443985153}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: ReturnToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5962,7 +5962,7 @@ MonoBehaviour:
     m_NormalColor: {r: 0.9098039, g: 0.972549, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.9476305, b: 0, a: 1}
     m_PressedColor: {r: 1, g: 0.7858338, b: 0, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.909804, g: 0.9725491, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -5982,9 +5982,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 5ddaeaf8d6a52f5478d203235cbb49c0, type: 3}
+      - m_Target: {fileID: 1443985153}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -14,7 +14,7 @@ public class LineRendManager : IFixedUpdatable
 
         CustomUpdateManager.Instance.Register(this);
 
-        EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
+        EventBus.Subscribe<UnregisterEntities>(UnregisterEntity);
     }
 
     public void FixedTick(float deltaTime)
@@ -39,7 +39,7 @@ public class LineRendManager : IFixedUpdatable
         line.SetPosition(1, startPoint.position + startPoint.forward * distance);
     }
 
-    private void UnregisterEntity(UnregisterEntitys unregisterEvent)
+    private void UnregisterEntity(UnregisterEntities unregisterEvent)
     {
         CustomUpdateManager.Instance.Unregister(this);
     }

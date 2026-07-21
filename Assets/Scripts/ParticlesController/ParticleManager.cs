@@ -20,7 +20,7 @@ public class ParticleManager
 
         WarmUpParticles();
 
-        EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);
+        EventBus.Subscribe<UnregisterEntities>(UnregisterAllCurrentEnemies);
     }
 
     private void WarmUpParticles()
@@ -43,7 +43,7 @@ public class ParticleManager
         particleReferences.Remove(end.objectInstance);
     }
 
-    public void UnregisterAllCurrentEnemies(UnregisterEntitys unresEvent)
+    public void UnregisterAllCurrentEnemies(UnregisterEntities unresEvent)
     {
         if (particleReferences.Count == 0) return;
 

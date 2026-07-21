@@ -43,7 +43,7 @@ public class WaveManager : IUpdatable
         EventBus.Publish(new UpdateTextEvent(enemiesKilled.ToString(), waveSize[currentWave].ToString()));
         EventBus.Publish(new OnWaveInit(currentWave, waveSize[currentWave]));
 
-        EventBus.Subscribe<UnregisterEntitys>(UnregisterAllCurrentEnemies);
+        EventBus.Subscribe<UnregisterEntities>(UnregisterAllCurrentEnemies);
     }
 
     public void Tick(float deltaTime)
@@ -107,14 +107,14 @@ public class WaveManager : IUpdatable
             }
             else
             {
-                EventBus.Publish(new WinGameEvent());
+                EventBus.Publish(new EndGameEvent(1));
                 return;
             }
         }
         EventBus.Publish(new UpdateTextEvent(enemiesKilled.ToString(), waveSize[currentWave].ToString()));
     }
 
-    public void UnregisterAllCurrentEnemies(UnregisterEntitys unresEvent)
+    public void UnregisterAllCurrentEnemies(UnregisterEntities unresEvent)
     {
         CustomUpdateManager.Instance.Unregister(this);
 

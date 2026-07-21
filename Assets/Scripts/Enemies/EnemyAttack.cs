@@ -5,6 +5,7 @@ public class EnemyAttack
     private Transform attacker;
     private Transform target;
 
+    private bool hitted = false;
     private float range = 2f;
 
     public EnemyAttack(Transform attacker, Transform target)
@@ -17,7 +18,7 @@ public class EnemyAttack
     {
         if (Vector3.Distance(target.position, attacker.position) < range)
         {
-            EventBus.Publish(new LoseGameEvent());
+            EventBus.Publish(new EndGameEvent(2));
         }
     }
 }

@@ -10,18 +10,18 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour, IUpdatable
 {
     public List<GameObject> waveMovableObjects;
-    public List<Transform> gamePanels; //0: Pause, 1: Win, 2: Lose
+    public List<GameObject> gamePanels; //0: Pause, 1: Win, 2: Lose
     public TextMeshProUGUI enemiesLeft;
     public Transform buttons;
     public Transform resumeButton;
 
     #region Variables for Canvas Game Objects
-    private Vector3 buttonsPositions = new Vector3(294.5f, 132.368744f, 0.736083984f);
-    private Vector3 buttonsOffScreen = new Vector3(294.5f, -33.2874908f, 0.736083984f);
-    private Vector3 resumePosition = new Vector3(294.5f, 132.368744f, 0.736083984f);
-    private Vector3 resumeOffScreen = new Vector3(294.5f, -33.2874908f, 0.736083984f);
-    private Vector3 panelPosition = new Vector3(294.5f, 165.5f, 0f);
-    private Vector3 panelOffScreen = new Vector3(896.752502f, 165.5f, 0f);
+    private Vector3 buttonsPositions = new Vector3(321.195007f, 147.868744f, 0.736083984f);
+    private Vector3 buttonsOffScreen;
+    private Vector3 resumePosition = new Vector3(321.195007f, 147.868744f, 0.736083984f);
+    private Vector3 resumeOffScreen;
+    private Vector3 panelPosition = new Vector3(325f, 181f, 0);
+    private Vector3 panelOffScreen = new Vector3(1140.0f, 181.0f, 0.0f);
     private Transform currentPanel;
     #endregion
 
@@ -35,12 +35,11 @@ public class UIManager : MonoBehaviour, IUpdatable
 
     private void Awake()
     {
-        if(SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name == "Game")
         {
             CustomUpdateManager.Instance.Register(this);
             EventBus.Subscribe<OnWaveInit>(OnWaveInit);
             EventBus.Subscribe<UpdateTextEvent>(UpdateText);
-            EventBus.Subscribe<UnregisterEntitys>(UnregisterEntity);
             ServiceLocator.Register(this);
         }
     }
@@ -87,12 +86,12 @@ public class UIManager : MonoBehaviour, IUpdatable
         }
     }
 
-    private void UnregisterEntity(UnregisterEntitys unregisterEvent)
+    private void UnregisterEntity()
     {
         CustomUpdateManager.Instance.Unregister(this);
     }
 
-    #region OnButton Methods
+    #region OnButtonClicked Methods 
     public void ResumeGame()
     {
         gameManager.OnResumeGame();
@@ -104,9 +103,7 @@ public class UIManager : MonoBehaviour, IUpdatable
 
     public void ResetGame()
     {
-        buttons.position = buttonsOffScreen; //CAPAZ SE PUEDE SACAR POR EL RESET DE ESCENA
-        currentPanel.position = panelOffScreen;
-        currentPanel = null;
+        UnregisterEntity();
         gameManager.OnResetGame();
     }
 
@@ -116,8 +113,8 @@ public class UIManager : MonoBehaviour, IUpdatable
     /// <param name="panelID"></param>
     public void MovePanel(int panelID)
     {
-        gamePanels[panelID].position = panelPosition;
-        currentPanel = gamePanels[panelID];
+        gamePanels[panelID].transform.position = panelPosition;
+        currentPanel = gamePanels[panelID].transform;
     }
 
     public void PauseButtons()
@@ -133,6 +130,7 @@ public class UIManager : MonoBehaviour, IUpdatable
 
     public void ReturnToMenu()
     {
+        UnregisterEntity();
         gameManager.OnReturnToMenu();
     }
 

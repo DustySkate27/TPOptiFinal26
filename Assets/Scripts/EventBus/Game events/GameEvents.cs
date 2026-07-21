@@ -1,12 +1,17 @@
 using UnityEngine;
 
-public class WinGameEvent : IGameEvent
+public class EndGameEvent : IGameEvent
 {
-    public WinGameEvent() { }
-}
-public class LoseGameEvent : IGameEvent
-{
-    public LoseGameEvent() { }
+    public int state;
+
+    /// <summary>
+    /// 1: Win panel. 2: Lose panel.
+    /// </summary>
+    /// <param name="winOrLose"></param>
+    public EndGameEvent(int winOrLose)
+    {
+        state = winOrLose;
+    }
 }
 
 public class UnsuscribeClasses : IGameEvent
@@ -77,7 +82,7 @@ public class UpdateTextEvent : IGameEvent
     }
 }
 
-public class UnregisterEntitys : IGameEvent
+public class UnregisterEntities : IGameEvent
 {
-    public UnregisterEntitys() { }
+    public UnregisterEntities() { }
 }
