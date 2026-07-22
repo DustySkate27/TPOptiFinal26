@@ -10,19 +10,21 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour, IUpdatable
 {
     public List<GameObject> waveMovableObjects;
-    public List<GameObject> gamePanels; //0: Pause, 1: Win, 2: Lose
+    public List<RectTransform> gamePanels; //0: Pause, 1: Win, 2: Lose
     public TextMeshProUGUI enemiesLeft;
-    public Transform buttons;
-    public Transform resumeButton;
+    public RectTransform resumeButton;
+    public RectTransform resetButton;
+    public RectTransform menuButton;
 
     #region Variables for Canvas Game Objects
-    private Vector3 buttonsPositions = new Vector3(321.195007f, 147.868744f, 0.736083984f);
-    private Vector3 buttonsOffScreen;
-    private Vector3 resumePosition = new Vector3(321.195007f, 147.868744f, 0.736083984f);
-    private Vector3 resumeOffScreen;
-    private Vector3 panelPosition = new Vector3(325f, 181f, 0);
-    private Vector3 panelOffScreen = new Vector3(1140.0f, 181.0f, 0.0f);
-    private Transform currentPanel;
+    private Vector3 panelOffScreen = new Vector3(2000f, 0f, 0f);
+    private Vector3 resumeButtonPosition = new Vector3(0f, 180f, 0f);
+    private Vector3 resumeButtonOffScreen = new Vector3(0f, -275f, 0f);
+    private Vector3 resetButtonPosition = new Vector3(0f, 120f, 0f);
+    private Vector3 resetButtonOffScreen = new Vector3(0f, -275f, 0f);
+    private Vector3 menuButtonPosition = new Vector3(0f, 60f, 0f);
+    private Vector3 menuButtonOffScreen = new Vector3(0f, -275f, 0f);
+    private RectTransform currentPanel;
     #endregion
 
     private GameManager gameManager;
@@ -95,9 +97,10 @@ public class UIManager : MonoBehaviour, IUpdatable
     public void ResumeGame()
     {
         gameManager.OnResumeGame();
-        buttons.transform.position = buttonsOffScreen;
-        resumeButton.transform.position = resumeOffScreen;
-        currentPanel.position = panelOffScreen;
+        resumeButton.anchoredPosition = resumeButtonOffScreen;
+        resetButton.anchoredPosition = resetButtonOffScreen;
+        menuButton.anchoredPosition = menuButtonOffScreen;
+        currentPanel.anchoredPosition = panelOffScreen;
         currentPanel = null;
     }
 
@@ -113,19 +116,21 @@ public class UIManager : MonoBehaviour, IUpdatable
     /// <param name="panelID"></param>
     public void MovePanel(int panelID)
     {
-        gamePanels[panelID].transform.position = panelPosition;
-        currentPanel = gamePanels[panelID].transform;
+        gamePanels[panelID].anchoredPosition = Vector3.zero;
+        currentPanel = gamePanels[panelID];
     }
 
     public void PauseButtons()
     {
-        resumeButton.position = resumePosition;
-        buttons.position = buttonsPositions;
+        resumeButton.anchoredPosition = resumeButtonPosition;
+        resetButton.anchoredPosition = resetButtonPosition;
+        menuButton.anchoredPosition = menuButtonPosition;
     }
     
     public void EndingButtons()
     {
-        buttons.position = buttonsPositions;
+        resetButton.anchoredPosition = resetButtonPosition;
+        menuButton.anchoredPosition = menuButtonPosition;
     }
 
     public void ReturnToMenu()
