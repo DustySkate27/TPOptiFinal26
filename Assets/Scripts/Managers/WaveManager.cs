@@ -33,11 +33,11 @@ public class WaveManager : IUpdatable
         waveSize = new Dictionary<int, int>();
         CustomUpdateManager.Instance.Register(this);
 
-        waveSize.Add(0, 1);
-        waveSize.Add(1, 1);
-        waveSize.Add(2, 1);
+        waveSize.Add(0, 10);
+        waveSize.Add(1,20);
+        waveSize.Add(2, 30);
 
-        WarmUpEnemies(enemySO, 3);
+        WarmUpEnemies(enemySO, 30);
 
         WaveSet();
         EventBus.Publish(new UpdateTextEvent(enemiesKilled.ToString(), waveSize[currentWave].ToString()));
