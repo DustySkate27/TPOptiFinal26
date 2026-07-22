@@ -106,9 +106,11 @@ public class GameManager : MonoBehaviour
 
     public void RestartRun()
     {
-        int eventSuscribe = EventBus.Clear();
-
         UnregisterServicies();
+
+        EventBus.Publish(new UnregisterEntities());
+
+        int eventSuscribe = EventBus.Clear();
 
         objectPoolManager.ClearPools();
 
@@ -119,9 +121,11 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        int eventSuscribe = EventBus.Clear();
-
         UnregisterServicies();
+
+        EventBus.Publish(new UnregisterEntities());
+
+        int eventSuscribe = EventBus.Clear();
 
         objectPoolManager.ClearPools();
 

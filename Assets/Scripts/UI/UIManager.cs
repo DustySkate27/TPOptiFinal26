@@ -110,6 +110,12 @@ public class UIManager : MonoBehaviour, IUpdatable
         gameManager.OnResetGame();
     }
 
+    public void ReturnToMenu()
+    {
+        UnregisterEntity();
+        gameManager.OnReturnToMenu();
+    }
+
     /// <summary>
     /// Refers to the Game Panel you want to access. 0: Pause, 1: Win, 2: Lose
     /// </summary>
@@ -131,12 +137,6 @@ public class UIManager : MonoBehaviour, IUpdatable
     {
         resetButton.anchoredPosition = resetButtonPosition;
         menuButton.anchoredPosition = menuButtonPosition;
-    }
-
-    public void ReturnToMenu()
-    {
-        UnregisterEntity();
-        gameManager.OnReturnToMenu();
     }
 
     public void OnPlayClick()
