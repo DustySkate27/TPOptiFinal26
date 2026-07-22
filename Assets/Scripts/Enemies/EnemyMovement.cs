@@ -22,12 +22,10 @@ public class EnemyMovement
 
     private Collider[] colliders;
 
-    // --- Optimización: chequeo de obstáculos espaciado en el tiempo ---
-    private float obstacleCheckInterval = 0.5f; // ajustable según necesidad
+    private float obstacleCheckInterval = 0.5f; 
     private float obstacleCheckTimer;
     private Vector3 cachedDeflectedDir;
 
-    // --- Optimización: coseno precalculado para reemplazar Vector3.Angle ---
     private float cosHalfObstacleAngle;
 
     public EnemyMovement(Transform transform, Transform target, Rigidbody targetRB, float speed, float maxForce, float rotationSpeed, float predictionFactor, EnemyAvoidanceSO avoidanceData)
@@ -52,8 +50,6 @@ public class EnemyMovement
 
         cosHalfObstacleAngle = Mathf.Cos(obstacleAngle * 0.5f * Mathf.Deg2Rad);
 
-        // Desincroniza el timer entre instancias para evitar que todos los
-        // enemigos hagan OverlapSphere en el mismo frame.
         obstacleCheckTimer = Random.Range(0f, obstacleCheckInterval);
     }
 
@@ -74,8 +70,7 @@ public class EnemyMovement
 
         float distance = Vector3.Distance(pos, targetPos);
 
-        // Limita el lookAhead: cerca del target predice poco, lejos predice más
-        float maxLookAhead = 1.5f;  // ajustable en segundos
+        float maxLookAhead = 1.5f; 
         float lookAheadTime = Mathf.Min(distance / speed, maxLookAhead);
 
         Vector3 predictedPos = targetPos + targetVelocity * lookAheadTime;
@@ -97,7 +92,6 @@ public class EnemyMovement
         Vector3 flatVelocity = velocity;
         flatVelocity.y = 0;
 
-        // Solo recalcula la evasión de obstáculos cada "obstacleCheckInterval" segundos
         obstacleCheckTimer -= deltaTime;
         if (obstacleCheckTimer <= 0f)
         {
@@ -143,7 +137,6 @@ public class EnemyMovement
             Vector3 dirToColl = closetPoint - pos;
             float distance = dirToColl.magnitude;
 
-            // Reemplazo de Vector3.Angle (evita Acos) por comparación de producto punto
             float dot = Vector3.Dot(dirToColl.normalized, currDir);
             if (dot < cosHalfObstacleAngle) continue;
 
