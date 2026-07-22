@@ -5,7 +5,6 @@ public class EnemyAttack
     private Transform attacker;
     private Transform target;
 
-    private bool hitted = false;
     private float range = 2f;
 
     public EnemyAttack(Transform attacker, Transform target)

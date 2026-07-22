@@ -15,10 +15,6 @@ public class CustomUpdateManager : MonoBehaviour
     private List<IFixedUpdatable> pendingFixUpdate = new List<IFixedUpdatable>();
     private int currentIndexFixUpdate;
 
-    private List<ILateUpdatable> latedUpdatables = new List<ILateUpdatable>();
-    private List<ILateUpdatable> pendingLateUpdate = new List<ILateUpdatable>();
-    private int currentIndexLateUpdate;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,9 +34,9 @@ public class CustomUpdateManager : MonoBehaviour
         for (currentIndexUpdate = 0; currentIndexUpdate < updatables.Count ; currentIndexUpdate++)
         {
             if(updatables.Count > 0)
-            updatables[currentIndexUpdate].Tick(Time.deltaTime); 
+                updatables[currentIndexUpdate].Tick(Time.deltaTime); 
         }
-
+        
         updatables.AddRange(pendingUpdate);
         pendingUpdate.Clear();
     }
@@ -55,17 +51,6 @@ public class CustomUpdateManager : MonoBehaviour
         fixedUpdatables.AddRange(pendingFixUpdate);
         pendingFixUpdate.Clear();
     }
-
-    //private void LateUpdate()
-    //{
-    //    for (currentIndexLateUpdate = 0; currentIndexLateUpdate < latedUpdatables.Count; currentIndexLateUpdate++)
-    //    {
-    //        latedUpdatables[currentIndexLateUpdate].Tick(Time.deltaTime);
-    //    }
-
-    //    latedUpdatables.AddRange(pendingLateUpdate);
-    //    pendingLateUpdate.Clear();
-    //}
 
     public void Register(IUpdatable updatable)
     {
@@ -91,18 +76,6 @@ public class CustomUpdateManager : MonoBehaviour
         currentIndexFixUpdate--;
     }
 
-    public void Register(ILateUpdatable updatable)
-    {
-        if (!latedUpdatables.Contains(updatable))
-            pendingLateUpdate.Add(updatable);
-    }
-
-    public void Unregister(ILateUpdatable updatable)
-    {
-        latedUpdatables.Remove(updatable);
-        currentIndexLateUpdate--;
-    }
-
     public void ClearAll()
     {
         updatables.Clear();
@@ -112,15 +85,11 @@ public class CustomUpdateManager : MonoBehaviour
         fixedUpdatables.Clear();
         pendingFixUpdate.Clear();
         currentIndexFixUpdate = 0;
-
-        latedUpdatables.Clear();
-        pendingLateUpdate.Clear();
-        currentIndexLateUpdate = 0;
     }
 
     public void CheckSuscriptions()
     {
-        Debug.Log("Update: " + updatables.Count + "; FixedUpdate: " + fixedUpdatables.Count + "; LateUpdate: " + latedUpdatables.Count);
+        Debug.Log("Update: " + updatables.Count + "; FixedUpdate: " + fixedUpdatables.Count);
 
         foreach(IUpdatable entitys in updatables)
         {

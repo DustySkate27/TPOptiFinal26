@@ -94,15 +94,15 @@ public class GameManager : MonoBehaviour
 
     public void OnEndCond(EndGameEvent end)
     {
+        EventBus.Publish(new UnregisterEntities());
+
+        CustomUpdateManager.Instance.ClearAll();
+
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
-        EventBus.Publish(new UnregisterEntities());
-
         objectPoolManager.ClearPools();
-
-        CustomUpdateManager.Instance.CheckSuscriptions();
 
         uiManager.MovePanel(end.state);
         uiManager.EndingButtons();
@@ -114,13 +114,9 @@ public class GameManager : MonoBehaviour
 
         EventBus.Publish(new UnregisterEntities());
 
-        CustomUpdateManager.Instance.CheckSuscriptions();
-
         int eventSuscribe = EventBus.Clear();
 
         objectPoolManager.ClearPools();
-
-        CustomUpdateManager.Instance.ClearAll();
 
         SceneManager.LoadScene("Game");
 
@@ -133,13 +129,9 @@ public class GameManager : MonoBehaviour
 
         EventBus.Publish(new UnregisterEntities());
 
-        CustomUpdateManager.Instance.CheckSuscriptions();
-
         int eventSuscribe = EventBus.Clear();
 
         objectPoolManager.ClearPools();
-
-        CustomUpdateManager.Instance.ClearAll();
 
         SceneManager.LoadScene("Menu");
 
