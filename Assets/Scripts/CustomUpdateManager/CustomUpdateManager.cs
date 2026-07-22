@@ -103,6 +103,21 @@ public class CustomUpdateManager : MonoBehaviour
         currentIndexLateUpdate--;
     }
 
+    public void ClearAll()
+    {
+        updatables.Clear();
+        pendingUpdate.Clear();
+        currentIndexUpdate = 0;
+
+        fixedUpdatables.Clear();
+        pendingFixUpdate.Clear();
+        currentIndexFixUpdate = 0;
+
+        latedUpdatables.Clear();
+        pendingLateUpdate.Clear();
+        currentIndexLateUpdate = 0;
+    }
+
     public void CheckSuscriptions()
     {
         Debug.Log("Update: " + updatables.Count + "; FixedUpdate: " + fixedUpdatables.Count + "; LateUpdate: " + latedUpdatables.Count);

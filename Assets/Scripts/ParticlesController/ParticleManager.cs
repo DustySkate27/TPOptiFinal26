@@ -47,9 +47,9 @@ public class ParticleManager
     {
         if (particleReferences.Count == 0) return;
 
-        foreach (ParticleBehaviour enemy in particleReferences.Values)
+        foreach (ParticleBehaviour particle in particleReferences.Values)
         {
-            CustomUpdateManager.Instance.Unregister(enemy);
+            CustomUpdateManager.Instance.Unregister(particle);
         }
     }
 }

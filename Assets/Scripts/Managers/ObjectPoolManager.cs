@@ -70,6 +70,8 @@ public class ObjectPoolManager
 
     public void ReturnObjectToPool(UnityEngine.Object obj)
     {
+        //if (obj == null) return;
+
         GameObject go = obj.GameObject();
 
         if (!instanceToPool.TryGetValue(go, out PooledObjectInfo pool))
