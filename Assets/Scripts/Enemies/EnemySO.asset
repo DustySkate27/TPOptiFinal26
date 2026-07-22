@@ -16,6 +16,7 @@ MonoBehaviour:
   hp: 1
   speed: 10
   maxForce: 3
-  rotationSpeed: 5
+  rotationSpeed: 100
   predictionFactor: 0.04
   destroySound: {fileID: 8300000, guid: efbe59819e502e14096a4eb1233c214c, type: 3}
+  avoidanceData: {fileID: 11400000, guid: 51650bcd25201cb4e84f29ee6d8fd6aa, type: 2}

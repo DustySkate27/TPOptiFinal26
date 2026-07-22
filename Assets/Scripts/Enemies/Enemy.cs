@@ -13,18 +13,19 @@ public class Enemy : IHealth, IUpdatable
     public Enemy(UnityEngine.Object instanceOfAnObject, Transform target, Rigidbody targetRB, EnemySO scriptObj)
     {
         CustomUpdateManager.Instance.Register(this);
-        
+
         hp = scriptObj.hp;
         thisInstance = instanceOfAnObject;
         destroySound = scriptObj.destroySound;
-        
-        movement = new EnemyMovement(instanceOfAnObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor);
+
+        movement = new EnemyMovement(instanceOfAnObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor, scriptObj.avoidanceData);
         attack = new EnemyAttack(instanceOfAnObject.GameObject().transform, target);
     }
 
     public void Tick(float deltaTime)
     {
-        movement.Pursuit();
+        movement.Execute(deltaTime);
+        //movement.Pursuit();
         attack.Check();
     }
 
