@@ -160,6 +160,11 @@ public class GameManager : MonoBehaviour
         return Instantiate(entity, spawnPosition, spawnRotation);
     }
 
+    public static void CallCheck()
+    {
+        Debug.Log("Entre");
+    }
+
     #region BUTTON ACTIONS
     public void OnReturnToMenu()
     {

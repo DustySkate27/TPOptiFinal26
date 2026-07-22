@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   prefab: {fileID: 7153141402127884706, guid: a4ec793513574cd49719c4055b630e2b, type: 3}
   hp: 1
-  speed: 10
+  speed: 1
   maxForce: 3
   rotationSpeed: 100
   predictionFactor: 0.04

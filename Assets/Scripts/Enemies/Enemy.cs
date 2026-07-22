@@ -1,4 +1,3 @@
-
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,23 +8,38 @@ public class Enemy : IHealth, IUpdatable
     private EnemyAttack attack;
     private UnityEngine.Object thisInstance;
     private AudioClip destroySound;
+    private bool isRegistered;
 
-    public Enemy(UnityEngine.Object instanceOfAnObject, Transform target, Rigidbody targetRB, EnemySO scriptObj)
+    // Se llama UNA sola vez, cuando se crea el wrapper (warm-up del pool)
+    public Enemy()
     {
-        CustomUpdateManager.Instance.Register(this);
+        movement = new EnemyMovement();
+        attack = new EnemyAttack();
+    }
 
-        hp = scriptObj.hp;
+    // Se llama cada vez que el enemigo reaparece: resetea el estado, no alloca
+    public void Init(UnityEngine.Object instanceOfAnObject, Transform target, Rigidbody targetRB, EnemySO scriptObj)
+    {
         thisInstance = instanceOfAnObject;
+        hp = scriptObj.hp;
         destroySound = scriptObj.destroySound;
 
-        movement = new EnemyMovement(instanceOfAnObject.GameObject().transform, target, targetRB, scriptObj.speed, scriptObj.maxForce, scriptObj.rotationSpeed, scriptObj.predictionFactor, scriptObj.avoidanceData);
-        attack = new EnemyAttack(instanceOfAnObject.GameObject().transform, target);
+        Transform selfTransform = instanceOfAnObject.GameObject().transform;
+
+        movement.Reset(selfTransform, target, targetRB, scriptObj.speed, scriptObj.maxForce,
+                        scriptObj.rotationSpeed, scriptObj.predictionFactor, scriptObj.avoidanceData);
+        attack.Reset(selfTransform, target);
+
+        if (!isRegistered)
+        {
+            CustomUpdateManager.Instance.Register(this);
+            isRegistered = true;
+        }
     }
 
     public void Tick(float deltaTime)
     {
         movement.Execute(deltaTime);
-        //movement.Pursuit();
         attack.Check();
     }
 
@@ -42,4 +56,9 @@ public class Enemy : IHealth, IUpdatable
         EventBus.Publish(new DisableEntityEvent(thisInstance));
     }
 
+    // Llamalo cuando el enemigo vuelve al pool, para permitir re-Register la próxima vez si hace falta
+    public void OnReturnedToPool()
+    {
+        isRegistered = false;
+    }
 }

@@ -5,6 +5,8 @@ public class ParticleManager
 {
     public Dictionary<UnityEngine.Object, ParticleBehaviour> particleReferences;
 
+    private Stack<ParticleBehaviour> particleWrapperPool;
+
     private Object particle;
 
     private int defaultSize = 10;
@@ -14,7 +16,8 @@ public class ParticleManager
     public ParticleManager(GameObject prefab, ObjectPoolManager objPoolMan)
     {
         poolManager = objPoolMan;
-        particleReferences = new Dictionary<UnityEngine.Object, ParticleBehaviour>();
+        particleReferences = new Dictionary<UnityEngine.Object, ParticleBehaviour>(defaultSize);
+        particleWrapperPool = new Stack<ParticleBehaviour>(defaultSize);
 
         particle = prefab;
 
@@ -26,19 +29,36 @@ public class ParticleManager
     private void WarmUpParticles()
     {
         poolManager.WarmUp(particle, defaultSize);
+
+        for (int i = 0; i < defaultSize; i++)
+            particleWrapperPool.Push(new ParticleBehaviour());
     }
 
     public void SpawnParticle(Vector3 spawnPosition, Quaternion spawnRotation)
     {
         UnityEngine.Object catchedRef = poolManager.SpawnObject(particle, spawnPosition, spawnRotation);
-        particleReferences.Add(catchedRef, new ParticleBehaviour(catchedRef));
+
+        ParticleBehaviour behaviour = GetOrCreateParticleWrapper();
+        behaviour.Init(catchedRef);
+
+        particleReferences.Add(catchedRef, behaviour);
+    }
+
+    private ParticleBehaviour GetOrCreateParticleWrapper()
+    {
+        if (particleWrapperPool.Count > 0)
+            return particleWrapperPool.Pop();
+
+        return new ParticleBehaviour(); // fallback de emergencia, no debería dispararse tras el warm-up
     }
 
     public void OnParticleEnd(OnParticleEndEvent end)
     {
         poolManager.ReturnObjectToPool(end.objectInstance);
 
-        CustomUpdateManager.Instance.Unregister(particleReferences[end.objectInstance]);
+        ParticleBehaviour behaviour = particleReferences[end.objectInstance];
+        behaviour.OnReturnedToPool();
+        particleWrapperPool.Push(behaviour);
 
         particleReferences.Remove(end.objectInstance);
     }
@@ -53,4 +73,3 @@ public class ParticleManager
         }
     }
 }
-

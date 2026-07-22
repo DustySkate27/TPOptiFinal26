@@ -2,7 +2,7 @@
 
 public class EnemyMovement
 {
-    Transform target;
+    private Transform target;
     private Rigidbody targetRB;
 
     private Transform transform;
@@ -22,13 +22,19 @@ public class EnemyMovement
 
     private Collider[] colliders;
 
-    private float obstacleCheckInterval = 0.5f; 
+    // --- Optimización: chequeo de obstáculos espaciado en el tiempo ---
+    private float obstacleCheckInterval = 0.5f; // ajustable según necesidad
     private float obstacleCheckTimer;
     private Vector3 cachedDeflectedDir;
 
+    // --- Optimización: coseno precalculado para reemplazar Vector3.Angle ---
     private float cosHalfObstacleAngle;
 
-    public EnemyMovement(Transform transform, Transform target, Rigidbody targetRB, float speed, float maxForce, float rotationSpeed, float predictionFactor, EnemyAvoidanceSO avoidanceData)
+    // Se llama UNA sola vez, cuando se crea el wrapper en el warm-up
+    public EnemyMovement() { }
+
+    // Se llama cada vez que el enemigo se reactiva desde el pool
+    public void Reset(Transform transform, Transform target, Rigidbody targetRB, float speed, float maxForce, float rotationSpeed, float predictionFactor, EnemyAvoidanceSO avoidanceData)
     {
         this.transform = transform;
         this.speed = speed;
@@ -41,16 +47,25 @@ public class EnemyMovement
         personalArea = avoidanceData.ObstaclePersonalArea;
         avoidanceRadius = avoidanceData.ObstacleRadius;
         obstacleAngle = avoidanceData.ObstacleAngle;
-        colliderCapacity = avoidanceData.ObstacleCount;
         targetWeight = avoidanceData.targetWeight;
-
         obsMask = avoidanceData.ObstacleLayer;
 
-        colliders = new Collider[colliderCapacity];
+        // Solo realoca si cambia el tamaño necesitado (normalmente nunca, después del warm-up)
+        if (colliders == null || colliderCapacity != avoidanceData.ObstacleCount)
+        {
+            colliderCapacity = avoidanceData.ObstacleCount;
+            colliders = new Collider[colliderCapacity];
+        }
 
         cosHalfObstacleAngle = Mathf.Cos(obstacleAngle * 0.5f * Mathf.Deg2Rad);
 
+        // Desincroniza el timer entre instancias para evitar que todos los
+        // enemigos hagan OverlapSphere en el mismo frame.
         obstacleCheckTimer = Random.Range(0f, obstacleCheckInterval);
+
+        // Resetea estado mutable del enemigo anterior
+        velocity = Vector3.zero;
+        cachedDeflectedDir = Vector3.zero;
     }
 
     public void Execute(float deltaTime)
@@ -70,7 +85,7 @@ public class EnemyMovement
 
         float distance = Vector3.Distance(pos, targetPos);
 
-        float maxLookAhead = 1.5f; 
+        float maxLookAhead = 1.5f;
         float lookAheadTime = Mathf.Min(distance / speed, maxLookAhead);
 
         Vector3 predictedPos = targetPos + targetVelocity * lookAheadTime;
@@ -171,7 +186,6 @@ public class EnemyMovement
     private void Flocking(float deltaTime)
     {
         Vector3 pursuitForce = Pursuit() * targetWeight;
-
         AddForce(pursuitForce, deltaTime);
     }
 
