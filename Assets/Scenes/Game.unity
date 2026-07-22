@@ -342,68 +342,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27429593}
   m_CullTransparentMesh: 1
---- !u!1 &42604930
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 42604931}
-  m_Layer: 0
-  m_Name: Canvases
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &42604931
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 42604930}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 253.3601, y: -0, z: 2339.9617}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &45332354
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 45332355}
-  m_Layer: 0
-  m_Name: fejfejfpej
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &45332355
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45332354}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 586, y: 238.67004, z: 1.4648438}
-  m_LocalScale: {x: 1.0360657, y: 1.0360657, z: 1.0360657}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &109218314
 GameObject:
   m_ObjectHideFlags: 0
@@ -5168,8 +5106,8 @@ MonoBehaviour:
   - {fileID: 632829457}
   - {fileID: 1718009802}
   gamePanels:
-  - {fileID: 27429593}
-  - {fileID: 747568807}
+  - {fileID: 27429594}
+  - {fileID: 747568808}
   - {fileID: 1204878680}
   enemiesLeft: {fileID: 1867484987}
   resumeButton: {fileID: 186344268}
@@ -7335,9 +7273,7 @@ SceneRoots:
   - {fileID: 8102023952452155478}
   - {fileID: 1712686697}
   - {fileID: 524294641}
-  - {fileID: 42604931}
   - {fileID: 1904963048}
-  - {fileID: 45332355}
   - {fileID: 549840816}
   - {fileID: 359800446}
   - {fileID: 255780929}
