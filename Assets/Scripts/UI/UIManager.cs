@@ -1,8 +1,5 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,7 +26,7 @@ public class UIManager : MonoBehaviour, IUpdatable
 
     private GameManager gameManager;
     private float movingTime = 0;
-    private float limitTime = 3;
+    private float limitTime = 4;
     private float speed = -500;
     private bool act = false;
     private int currentWave;

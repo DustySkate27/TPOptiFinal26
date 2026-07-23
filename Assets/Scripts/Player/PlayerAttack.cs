@@ -29,7 +29,7 @@ public class PlayerAttack
     {
         if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
         {
-            if (currentTime >= rateOfFire)
+            if (currentTime >= rateOfFire && !Cursor.visible)
             {
                 Shoot();
                 currentTime = 0f;
