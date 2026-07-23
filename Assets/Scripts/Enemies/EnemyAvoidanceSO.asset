@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f66f0ef34c1094ba51b6bdd7ec959b, type: 3}
   m_Name: EnemyAvoidanceSO
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAvoidanceSO
-  ObstacleRadius: 5
+  ObstacleRadius: 3
   ObstacleAngle: 180
-  ObstaclePersonalArea: 2
+  ObstaclePersonalArea: 1
   ObstacleCount: 10
   targetWeight: 1.5
   ObstacleLayer:
